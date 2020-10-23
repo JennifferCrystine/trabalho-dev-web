@@ -96,12 +96,23 @@ h1{
       background: transparent;
       transition: background-color 0.2s;   
     }  
-    #mainNav .navbar-brand {
+    #mainNav .nav-home{
       color: #fff;
     }    
-    #mainNav .navbar-nav > li.nav-item > a {
+    #mainNav .navbar-nav-home> li.nav-item > a {
       padding: 10px 20px;
       color: #fff;
+    } 
+  }
+
+  @media only screen and (min-width: 992px) {
+  
+    #mainNav .nav-post {
+      color: #555555;
+    }    
+    #mainNav .nav-post > li.nav-item > a {
+      color: #555555;
+      padding: 10px 20px;
     } 
   }
 
@@ -179,11 +190,15 @@ header.masthead-post .post-heading h1 {
   margin-top: 0;
 }
 
-header.masthead .page-heading .subheading,
-header.masthead .site-heading .subheading {
+header.masthead .page-heading .subheading {
   font-size: 18px;
   font-weight: 300;
   color: #555555;
+}
+header.masthead .site-heading .subheading {
+  font-size: 18px;
+  font-weight: 300;
+  color: white;
 }
 
 @media only screen and (min-width: 768px) {
