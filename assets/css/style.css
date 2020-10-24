@@ -168,9 +168,11 @@ header.masthead-post .post-heading .subheading{
 @media only screen and (min-width: 768px) {
   header.masthead .page-heading,
   header.masthead .post-heading,
-  header.masthead .site-heading,
-  header.masthead-post .post-heading {
+  header.masthead .site-heading{
     padding: 100px 0;
+  }
+  header.masthead-post .post-heading {
+    padding: 100px 0 0;
   }
 }
 
@@ -317,6 +319,11 @@ header.masthead .post-heading .meta a {
     font-size: 36px;
     font-family: 'OpenSans-SemiBold';
   }
+}
+
+.post-content p span {
+  display: block;
+  margin-bottom: 30px;
 }
 
 /* 
