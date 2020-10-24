@@ -278,7 +278,8 @@ header.masthead .post-heading .meta a {
   color: #d82a37;
 }
 
-.post-preview > a > .post-title {
+.post-preview > a > .post-title,
+.post-title-button {
   font-size: 30px;
   margin-top: 30px;
   margin-bottom: 10px;
@@ -316,7 +317,8 @@ header.masthead .post-heading .meta a {
 }
 
 @media only screen and (min-width: 768px) {
-  .post-preview > a > .post-title {
+  .post-preview > a > .post-title,
+  .post-title-button {
     font-size: 36px;
     font-family: 'OpenSans-SemiBold';
   }
@@ -332,7 +334,7 @@ header.masthead .post-heading .meta a {
 
 */
 footer {
-  padding: 50px 0 65px;
+  padding: 0;
 }
 
 footer .copyright {
@@ -346,9 +348,6 @@ footer .copyright {
 */
 
 /* User list table */
- .user-list{
-  margin-top:50px;
-} 
 .user-list tbody td .user-link {
 	display: block;
 	font-size: 1.25em;
