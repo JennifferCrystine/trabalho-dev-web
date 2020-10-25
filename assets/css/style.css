@@ -3,8 +3,7 @@
 2 - Navigation
 3 - Header
 4 - Blog posts section 
-5 - Footer
-6 - Authorized Users
+5 - Authorized Users
 */
 
 /* 
@@ -45,15 +44,28 @@
 }
 
 body {
-    font-size: 18px;
-    color: #212529;
-    font-family: 'OpenSans-Regular'
-  }
+  font-size: 18px;
+  color: #212529;
+  font-family: 'OpenSans-Regular';
+  min-height:100vh; 
+  margin:0;
+}
 
 h1{
   font-family: 'OpenSans-Bold';
 }
 
+/* Footer*/
+footer {
+  height: 50px;
+  bottom: 0;
+  width: 100%;
+}
+
+footer .copyright {
+  text-align: center;
+  font-size: 14px;
+}
 
 /* 
 2 - Navigation                                              
@@ -279,7 +291,8 @@ header.masthead .post-heading .meta a {
 }
 
 .post-preview > a > .post-title,
-.post-title-button {
+.post-title-button,
+.create-post h2 {
   font-size: 30px;
   margin-top: 30px;
   margin-bottom: 10px;
@@ -330,20 +343,7 @@ header.masthead .post-heading .meta a {
 }
 
 /* 
-5 - Footer
-
-*/
-footer {
-  padding: 0;
-}
-
-footer .copyright {
-  text-align: center;
-  font-size: 14px;
-}
-
-/* 
-6 - Authorized Users
+5 - Authorized Users
 
 */
 
