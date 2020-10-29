@@ -292,7 +292,7 @@ header.masthead .post-heading .meta a {
 }
 
 .post-preview > a > .post-title,
-.post-title-button,
+.post-title-button, 
 .create-post h2 {
   font-size: 30px;
   margin-top: 30px;
@@ -507,4 +507,15 @@ header.masthead .post-heading .meta a {
 }
 .table-stats .table-line-plus .status-social-icon {
 	color: #a75d54;
+}
+
+
+/* 6 - Comments */
+
+.post-comments .post-comment-content{
+  font-size: 14px;
+}
+
+.post-comments .post-commentator-name{
+  color: #4e0000;
 }
