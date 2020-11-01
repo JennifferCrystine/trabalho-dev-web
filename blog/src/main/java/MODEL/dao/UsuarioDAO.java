@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class UsuarioDAO {
     
-    public void criar(Usuario usuario) throws SQLException {
+    public void criar(Usuario usuario) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm= null;
         try {
@@ -34,13 +34,13 @@ public class UsuarioDAO {
             stm.setInt(5, usuario.getPapel());
             stm.executeUpdate();
         }catch (SQLException ex) {
-            throw new SQLException("Problemas ao conectar ao banco.");
+            System.out.println("Problemas ao conectar ao banco: "+ex);
         } finally{
             Conexao.closeConnection(con, stm);
         }
     }   
      
-    public void editar(Usuario usuario, int id){
+    public void editar(Usuario usuario, int id) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
         try {
@@ -55,13 +55,13 @@ public class UsuarioDAO {
             stm.executeUpdate();
             
         }catch (SQLException ex) {
-            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Problemas ao conectar ao banco: "+ex);
         } finally{
             Conexao.closeConnection(con, stm);
         }
     }
         
-    public void remover(Usuario usuario) throws SQLException {
+    public void remover(Usuario usuario) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
         try {
@@ -70,14 +70,14 @@ public class UsuarioDAO {
             stm.executeUpdate();
         }
         catch(SQLException ex){
-            throw new SQLException("Problemas ao conectar ao banco.");
+            System.out.println("Problemas ao conectar ao banco: "+ex);
         }
         finally {
             Conexao.closeConnection(con, stm);
         }
     }
     
-    public List<Usuario> getUsuariosAprovados() throws SQLException {
+    public List<Usuario> getUsuariosAprovados() {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
         ResultSet resultado = null;
@@ -92,7 +92,7 @@ public class UsuarioDAO {
             
         }
         catch(SQLException ex){
-            throw new SQLException("Problemas ao conectar ao banco.");
+            System.out.println("Problemas ao conectar ao banco: "+ex);
         }
         finally {
             Conexao.closeConnection(con, stm, resultado);            
@@ -100,7 +100,7 @@ public class UsuarioDAO {
         return usuarios;
     }
     
-     public List<Usuario> getUsuariosNaoAprovados() throws SQLException {
+     public List<Usuario> getUsuariosNaoAprovados() {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
         ResultSet resultado = null;
@@ -115,12 +115,38 @@ public class UsuarioDAO {
             
         }
         catch(SQLException ex){
-            throw new SQLException("Problemas ao conectar ao banco.");
+            System.out.println("Problemas ao conectar ao banco: "+ex);
         }
         finally {
             Conexao.closeConnection(con, stm, resultado);            
         }
         return usuarios;
     }
+     
+     public Usuario validarUsuario (String cpf, String senha) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stm; 
+        ResultSet resultado = null;
+        Usuario usuario = new Usuario();
+        try{
+            stm = con.prepareStatement("select * from usuario where cpf = ? and "
+                    + "senha = ?");
+            stm.setString(1, cpf);
+            stm.setString(2, senha);
+            resultado = stm.executeQuery();
+            while(resultado.next()){
+               usuario.setIdUsuario(resultado.getInt("id"));
+               usuario.setNome(resultado.getString("nome"));
+               usuario.setEmail(resultado.getString("email"));
+               usuario.setSenha(resultado.getString("senha"));
+               usuario.setCpf(resultado.getString("cpf"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Problemas ao conectar ao banco: "+ex);
+        } finally{
+            Conexao.closeConnection(con, null, resultado);
+        }
+        return usuario;
+    } 
 }
 
