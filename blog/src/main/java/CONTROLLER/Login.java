@@ -36,7 +36,7 @@ public class Login extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getSession().setAttribute("usuario", null); 
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+//        request.getRequestDispatcher("../../webapp/VIEW/index.jsp").forward(request, response);
     }
 
     /**
@@ -65,7 +65,7 @@ public class Login extends HttpServlet {
         cookieSenha.setMaxAge(60*60);
         response.addCookie(cookieLogin);
         response.addCookie(cookieSenha);
-//        RequestDispatcher view = request.getRequestDispatcher("../view/perfil.jsp"); implementar pra enviar pra home
+        RequestDispatcher view = request.getRequestDispatcher("../view/index.jsp"); //implementar pra enviar pra home
 //        view.forward(request, response);
     }
 }

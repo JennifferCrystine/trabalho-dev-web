@@ -20,6 +20,7 @@ import java.util.logging.Logger;
  * @author jenniffercrystine
  */
 public class UsuarioDAO {
+    private final int INF = -9999; //variavel usada para representar valor infinito
     
     public void criar(Usuario usuario) {
         Connection con = Conexao.getConnection();
@@ -148,5 +149,59 @@ public class UsuarioDAO {
         }
         return usuario;
     } 
+     
+   
+     
+    public int checaPapel (Usuario usuario) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stm; 
+        ResultSet resultado = null;
+        int papel = INF;
+        
+        try {
+            stm = con.prepareStatement("select papel from usuario where id = ?");
+            stm.setInt(0, usuario.getIdUsuario());
+            resultado = stm.executeQuery();
+            while(resultado.next()) {
+                papel = resultado.getInt("papel");
+            }    
+        } catch(SQLException ex) {
+            System.out.println("Problemas ao conectar ao banco: "+ex);
+        } 
+        return papel;
+    }
+    
+     public boolean isAdmin(Usuario usuario) {
+        int papel = checaPapel(usuario);
+        if (papel == INF || papel != 0){
+            return false;
+        }        
+        else if (papel == 0){
+            return true;
+        }        
+        return false;
+    }
+     
+    public boolean isAutor(Usuario usuario) {
+        int papel = checaPapel(usuario);
+        if (papel == INF || papel != 1){
+            return false;
+        }        
+        else if (papel == 1){
+            return true;
+        }        
+        return false;
+    }
+    
+    public boolean isComentarista(Usuario usuario) {
+        int papel = checaPapel(usuario);
+        if (papel == INF || papel != 2){
+            return false;
+        }        
+        else if (papel == 2){
+            return true;
+        }        
+        return false;
+    }
 }
 
