@@ -9,7 +9,10 @@ import MODEL.classes.Artigo;
 import MODEL.utilitarios.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -17,7 +20,7 @@ import java.sql.SQLException;
  */
 public class ArtigoDAO {
     
-    public void criar(Artigo artigo) throws SQLException{
+    public void criar(Artigo artigo) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm= null;
         try {
@@ -31,7 +34,7 @@ public class ArtigoDAO {
             stm.setString(6, String.valueOf(artigo.isAprovado()));
             stm.executeUpdate();
         }catch (SQLException ex) {
-            throw new SQLException("Problemas ao conectar ao banco.");
+            System.out.println("Problemas ao conectar ao banco: "+ex);
         } finally{
             Conexao.closeConnection(con, stm);
         }
@@ -70,4 +73,26 @@ public class ArtigoDAO {
             Conexao.closeConnection(con, stm);
         }
     }   
+    
+    
+        public List<Artigo> getArtigos() {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stm = null;
+        ResultSet resultado = null;
+        List <Artigo> artigos = new ArrayList();
+        try {
+            stm = con.prepareStatement("select * from artigo");
+            resultado = stm.executeQuery();
+            while(resultado.next()) {
+                artigos.add((Artigo)resultado);                
+            }
+        }
+        catch(SQLException ex){
+            System.out.println("Problemas ao conectar ao banco: "+ex);
+        }
+        finally {
+            Conexao.closeConnection(con, stm, resultado);
+        }
+        return artigos;
+    }
 }

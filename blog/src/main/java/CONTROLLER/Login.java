@@ -52,20 +52,48 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         
         String cpf = request.getParameter("cpf");  //recupera o login informado
-        String senha = request.getParameter("senha");   //recupera a senha informada
+        String senha = request.getParameter("password");   //recupera a senha informada
         
         Usuario usuario = new Usuario();
         
         usuario = usuarioDAO.validarUsuario(cpf, senha);
+        int id = usuario.getIdUsuario();
+        if (usuarioDAO.checaSeAprovado(id) == 1) {
+            if (usuarioDAO.isAdmin(usuario)) {
+                request.getSession().setAttribute("usuario", usuario);
+                Cookie cookieLogin=new Cookie("login", cpf);   //implementação de cookie dos dados de login
+                Cookie cookieSenha= new Cookie("senha",senha);
+                cookieLogin.setMaxAge(60*60);
+                cookieSenha.setMaxAge(60*60);
+                response.addCookie(cookieLogin);
+                response.addCookie(cookieSenha);
+                RequestDispatcher view = request.getRequestDispatcher("Administrador"); //envia pra home
+                view.forward(request, response);
+            }
+            else if (usuarioDAO.isAutor(usuario)) {
+                request.getSession().setAttribute("usuario", usuario);
+                Cookie cookieLogin=new Cookie("login", cpf);   //implementação de cookie dos dados de login
+                Cookie cookieSenha= new Cookie("senha",senha);
+                cookieLogin.setMaxAge(60*60);
+                cookieSenha.setMaxAge(60*60);
+                response.addCookie(cookieLogin);
+                response.addCookie(cookieSenha);
+                RequestDispatcher view = request.getRequestDispatcher("Autor"); //envia pra home
+                view.forward(request, response);
+            }
+            else if (usuarioDAO.isComentarista(usuario)) {
+                request.getSession().setAttribute("usuario", usuario);
+                Cookie cookieLogin=new Cookie("login", cpf);   //implementação de cookie dos dados de login
+                Cookie cookieSenha= new Cookie("senha",senha);
+                cookieLogin.setMaxAge(60*60);
+                cookieSenha.setMaxAge(60*60);
+                response.addCookie(cookieLogin);
+                response.addCookie(cookieSenha);
+                RequestDispatcher view = request.getRequestDispatcher("/page-author-home.jsp"); //envia pra home
+                view.forward(request, response);
+            }
+        }
         
-        request.getSession().setAttribute("usuario", usuario);
-        Cookie cookieLogin=new Cookie("login", cpf);   //implementação de cookie dos dados de login
-        Cookie cookieSenha= new Cookie("senha",senha);
-        cookieLogin.setMaxAge(60*60);
-        cookieSenha.setMaxAge(60*60);
-        response.addCookie(cookieLogin);
-        response.addCookie(cookieSenha);
-        RequestDispatcher view = request.getRequestDispatcher("../view/index.jsp"); //implementar pra enviar pra home
-//        view.forward(request, response);
+        
     }
 }

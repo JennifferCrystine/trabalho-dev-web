@@ -33,6 +33,8 @@ public class UsuarioCadastro extends HttpServlet {
         String acao = request.getParameter("acao");//cria uma variavel que define a acao do doGet
         Usuario usuario = (Usuario)request.getSession().getAttribute("usuario");
         request.getSession().setAttribute("usuario", usuario);//salva Usuário na seção
+        
+        
     }
 
     @Override
@@ -41,15 +43,15 @@ public class UsuarioCadastro extends HttpServlet {
         Usuario usuario= new Usuario();
         
         usuario.setCpf(request.getParameter("cpf"));
-        usuario.setNome(request.getParameter("nome"));
+        usuario.setNome(request.getParameter("name"));
         usuario.setEmail(request.getParameter("email"));
         usuario.setCpf(request.getParameter("login"));
-        usuario.setSenha(request.getParameter("senha"));
+        usuario.setSenha(request.getParameter("password"));
         usuario.setAprovado(false);
         
-        String papel = (request.getParameter("papel"));
+        String papel = (request.getParameter("roles"));
         switch (papel) {
-            case "Admin":
+            case "Administrador":
                 usuario.setPapel(0); 
                 break;
                
@@ -61,19 +63,39 @@ public class UsuarioCadastro extends HttpServlet {
                 usuario.setPapel(2);
                 break;       
         }
-  
-        if(request.getParameter("editar") == null)//se a variavel for null, cria Usuário
-        {
-            this.usuarioDAO.criar(usuario);
-            RequestDispatcher view= request.getRequestDispatcher("/.jsp");//redireciona para pagina de login
-            view.forward(request, response);
+        
+        usuarioDAO.criar(usuario);
+        if (usuarioDAO.isAdmin(usuario)) {            
+                RequestDispatcher view = request.getRequestDispatcher("Administrador"); //envia pra home
+                view.forward(request, response);
         }
-        else if (request.getParameter("editar").equals("editar"))//se nao for igual a "editar", edita o Aluno
-        {
-            this.usuarioDAO.editar(usuario, usuario.getIdUsuario());
-            RequestDispatcher view= request.getRequestDispatcher("/index.jsp");//redireciona para index
-            view.forward(request, response);
+        else if (usuarioDAO.isAutor(usuario)) {            
+                RequestDispatcher view = request.getRequestDispatcher("Autor"); //envia pra home
+                view.forward(request, response);
         }
+        else if (usuarioDAO.isComentarista(usuario)) {            
+                RequestDispatcher view = request.getRequestDispatcher("Comentarista"); //envia pra home
+                view.forward(request, response);
+        }
+        else {
+            RequestDispatcher view= request.getRequestDispatcher("/index.jsp");//redireciona para home
+            view.forward(request, response);
+        
+        }
+        
+        
+//        if(request.getParameter("editar") == null)//se a variavel for null, cria Usuário
+//        {
+//            this.usuarioDAO.criar(usuario);
+//            RequestDispatcher view= request.getRequestDispatcher("/.jsp");//redireciona para pagina de login
+//            view.forward(request, response);
+//        }
+//        else if (request.getParameter("editar").equals("editar"))//se nao for igual a "editar", edita o Aluno
+//        {
+//            this.usuarioDAO.editar(usuario, usuario.getIdUsuario());
+//            RequestDispatcher view= request.getRequestDispatcher("/index.jsp");//redireciona para index
+//            view.forward(request, response);
+//        }
     }
 
 

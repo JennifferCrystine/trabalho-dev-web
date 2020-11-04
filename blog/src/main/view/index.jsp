@@ -3,7 +3,9 @@
     Created on : Nov 2, 2020, 1:29:29 PM
     Author     : jenniffercrystine
 --%>
-
+<%@page import="CONTROLLER.ArtigoController"%>
+<%@page import="MODEL.dao.ArtigoDAO"%>
+<%@page import="MODEL.classes.Artigo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -57,12 +59,12 @@
             <form action="Login" method="POST" id="form-login">
               <div class="form-group">
                 <label for="user-cpf" class="col-form-label">CPF:</label>
-                <input type="number" class="form-control" id="user-cpf" required="required" placeholder="Informe seu CPF">
+                <input type="number" class="form-control" id="user-cpf" name="cpf" required="required" placeholder="Informe seu CPF">
                 <span class='msg-erro msg-cpf' style="color: red; display: none;"></span>
               </div>
               <div class="form-group">
                 <label for="user-password" class="col-form-label">Senha:</label>
-                <input type="password" class="form-control" id="user-password" required="required" placeholder="Informe sua senha"></input>
+                <input type="password" class="form-control" id="user-password" name="password" required="required" placeholder="Informe sua senha"></input>
                 <span class='msg-erro msg-password' style="color: red; display: none;"></span>
               </div>
             </form>
@@ -86,25 +88,25 @@
             </button>
           </div>
           <div class="modal-body">
-            <form id="form-signup">
+            <form id="form-signup" action="UsuarioCadastro" method="POST">
               <div class="form-group">
                 <label for="user-name" class="col-form-label">Nome:</label>
-                <input type="text" class="form-control" id="user-name">
+                <input type="text" class="form-control" id="user-name" name="name">
                 <span class='msg-erro msg-name' style="color: red; display: none;"></span>
               </div>
               <div class="form-group">
                 <label for="user-cpf" class="col-form-label">CPF:</label>
-                <input type="number" class="form-control" id="user-cpf-signup">
+                <input type="number" class="form-control" id="user-cpf-signup" name="cpf">
                 <span class='msg-erro msg-cpf-signup' style="color: red; display: none;"></span>
               </div>
               <div class="form-group">
                 <label for="user-email" class="col-form-label">E-mail:</label>
-                <input type="email" class="form-control" id="user-email">
+                <input type="email" class="form-control" id="user-email" name="email">
                 <span class='msg-erro msg-email' style="color: red; display: none;"></span>
               </div>
               <div class="form-group">
                 <label for="user-password" class="col-form-label">Senha:</label>
-                <input type="password" class="form-control" id="user-password"></input>
+                <input type="password" class="form-control" id="user-password-signup" name="password"></input>
                 <span class='msg-erro msg-password-signup' style="color: red; display: none;"></span>
               </div>
               <p>Selecione o papel desejado:</p>
@@ -130,7 +132,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-primary" onclick=validateSignUp()>Cadastrar-se</button>
+            <button type="submit" class="btn btn-primary">Cadastrar-se</button>
           </div>
         </div>
       </div>
@@ -159,60 +161,22 @@
     </header>
    
     <!-- Main Content -->
+    <% ArtigoDAO artigoDAO = new ArtigoDAO();%>
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="post-preview">
-            <a href="page-post.jsp">
-              <h2 class="post-title">
-                Exemplo de título de post 1
-              </h2>
-              <h3 class="post-subtitle">
-                Lorem ipsum dolor sit amet.
-              </h3>
-            </a>
-            <p class="post-category">Política</p>
-            <p class="post-meta">Postado por Nome do Autor em 25 de Outubro, 2020</p>
-          </div>
-          <hr>
-          <div class="post-preview">
-            <a href="page-post.jsp">
-              <h2 class="post-title">
-                Exemplo de título de post 2
-              </h2>
-              <h3 class="post-subtitle">
-                Lorem ipsum dolor sit amet, consectetur adipiscing.
-              </h3>
-            </a>
-            <p class="post-category">Esporte</p>
-            <p class="post-meta">Postado por Nome do Autor em 23 de Outubro, 2020</p>
-          </div>
-          <hr>
-          <div class="post-preview">
-            <a href="page-post.jsp">
-              <h2 class="post-title">
-                Exemplo de título de post 3
-              </h2>
-              <h3 class="post-subtitle">
-                Ut commodo, purus id sodales convallis, urna.
-              </h3>
-            </a>
-            <p class="post-category">Cultura</p>
-            <p class="post-meta">Postado por Nome do Autor em 23 de Outubro, 2020</p>
-          </div>
-          <hr>
-          <div class="post-preview">
-            <a href="page-post.jsp">
-              <h2 class="post-title">
-                Exemplo de título de post 4
-              </h2>
-              <h3 class="post-subtitle">
-                In pellentesque ligula sed ultricies consequat. Curabitur pulvinar tortor eu.              </h3>
-            </a>
-            <p class="post-category">Arte</p>
-            <p class="post-meta">Postado por Nome do Autor em 20 de Outubro, 2020</p>
-          </div>
-          <hr>
+            <% for(ArtigoDAO artigo : artigoDAO.getArtigos){ %>  
+                <div class="post-preview">
+                  <a href="page-post.jsp">
+                    <h2 class="post-title">
+                        <% artigo.getTitulo();%>
+                    </h2>
+                  </a>
+                  <p class="post-category"><% artigo.getCategoria();%></p>
+                  <p class="post-meta"><% artigo.getUsuario().getNome();%></p>
+                </div>
+                <hr>
+            <% }%>          
           <!-- Pager -->
           <div class="clearfix">
             <a class="btn btn-primary float-right" href="page-post.jsp">Posts antigos&rarr;</a>

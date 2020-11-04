@@ -12,8 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -76,6 +74,30 @@ public class UsuarioDAO {
         finally {
             Conexao.closeConnection(con, stm);
         }
+    }
+    
+    public int checaSeAprovado(int id) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stm = null;
+        ResultSet resultado = null;
+        int status = INF;
+        try {
+            stm = con.prepareStatement("SELECT cadastro_aprovado from usuario where id =?");
+            stm.setInt(1, id);
+            resultado = stm.executeQuery();            
+            while(resultado.next()){
+                status = resultado.getInt("cadastro_aprovado");
+            }
+            
+        }
+        catch(SQLException ex){
+            System.out.println("Problemas ao conectar ao banco: "+ex);
+        }
+        finally {
+            Conexao.closeConnection(con, stm, resultado);            
+        }
+        return status;
+        
     }
     
     public List<Usuario> getUsuariosAprovados() {
@@ -149,7 +171,6 @@ public class UsuarioDAO {
         }
         return usuario;
     } 
-     
    
      
     public int checaPapel (Usuario usuario) {

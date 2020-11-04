@@ -21,7 +21,7 @@ function validateLogin(evt){
 
 	/* Validação do campo nome */
 	cpf_box = document.querySelector('.msg-cpf');
-	if(cpf.value == ""){
+	if(cpf.value === ""){
 		cpf_box.innerHTML = "Por favor, forneça seu CPF!";
 		cpf_box.style.display = 'block';
 		countErr += 1;
@@ -31,7 +31,7 @@ function validateLogin(evt){
 	
 	/* Validação do campo senha */
 	password_box = document.querySelector('.msg-password');
-	if(password.value == ""){
+	if(password.value === ""){
 		password_box.innerHTML = "Por favor, forneça sua senha!";
 		password_box.style.display = 'block';
 		countErr += 1;
@@ -58,7 +58,7 @@ function validateSignUp(evt){
 
 	/* Validação do campo nome */
 	name_box = document.querySelector('.msg-name');
-	if(name.value == ""){
+	if(name.value === ""){
 		name_box.innerHTML = "Forneça seu nome!";
 		name_box.style.display = 'block';
 		countErr += 1;
@@ -68,7 +68,7 @@ function validateSignUp(evt){
 
 	/* Validação do campo email */
 	mail_box = document.querySelector('.msg-email');
-	if(mail.value == ""){
+	if(mail.value === ""){
 		mail_box.innerHTML = "Favor preencher o E-mail";
 		mail_box.style.display = 'block';
 		countErr += 1;
@@ -82,7 +82,7 @@ function validateSignUp(evt){
 
 	/* Validação do campo cpf */
 	cpf_box = document.querySelector('.msg-cpf-signup');
-	if(cpf.value == ""){
+	if(cpf.value === ""){
 		cpf_box.innerHTML = "Favor preencher o CPF";
 		cpf_box.style.display = 'block';
 		countErr += 1;
@@ -92,7 +92,7 @@ function validateSignUp(evt){
 
 	/* Validação do campo senha */
 	password_box = document.querySelector('.msg-password-signup');
-	if(password.value == ""){
+	if(password.value === ""){
 		password_box.innerHTML = "Favor preencher a Senha";
 		password_box.style.display = 'block';
 		countErr += 1;
