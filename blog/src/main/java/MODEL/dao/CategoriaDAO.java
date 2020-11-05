@@ -9,6 +9,7 @@ import MODEL.classes.Categoria;
 import MODEL.utilitarios.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -29,7 +30,28 @@ public class CategoriaDAO {
         } finally{
             Conexao.closeConnection(con, stm);
         }
-    }   
+    }  
+    
+    public Categoria buscaCategoria(int idCategoria) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stm= null;
+        ResultSet resultado = null;
+        Categoria categoria = new Categoria();
+        try {
+            stm = con.prepareStatement("select * from categoria where id=?");
+            stm.setInt(1, idCategoria);
+            resultado = stm.executeQuery();
+            while(resultado.next()){
+                categoria.setIdCategoria(resultado.getInt("id"));
+                categoria.setDescricao(resultado.getString("descricao"));                
+            }            
+        } catch (SQLException ex) {
+            System.out.println("Problemas ao conectar com o banco: "+ex);
+        } finally {
+            Conexao.closeConnection(con, stm, resultado);
+        }
+        return categoria;
+    }
      
     public void editar(Categoria categoria, int id) throws SQLException{
         Connection con = Conexao.getConnection();

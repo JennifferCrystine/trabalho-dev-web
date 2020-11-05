@@ -6,6 +6,9 @@
 package MODEL.dao;
 
 import MODEL.classes.Artigo;
+import MODEL.classes.Categoria;
+import MODEL.dao.CategoriaDAO;
+import MODEL.classes.Usuario;
 import MODEL.utilitarios.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -75,16 +78,29 @@ public class ArtigoDAO {
     }   
     
     
-        public List<Artigo> getArtigos() {
+    public List<Artigo> getArtigos() {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
         ResultSet resultado = null;
         List <Artigo> artigos = new ArrayList();
+        
         try {
             stm = con.prepareStatement("select * from artigo");
             resultado = stm.executeQuery();
             while(resultado.next()) {
-                artigos.add((Artigo)resultado);                
+                Artigo artigo = new Artigo();
+                Categoria categoria = new Categoria();
+                CategoriaDAO categoriaDAO = new CategoriaDAO();
+                Usuario usuario = new Usuario();
+                UsuarioDAO usuarioDAO = new UsuarioDAO();
+                artigo.setIdArtigo(resultado.getInt("id"));
+                int idCategoria = resultado.getInt("id_categoria");                
+                categoria = categoriaDAO.buscaCategoria(idCategoria);
+                artigo.setCategoria(categoria);
+                int idUsuario = resultado.getInt("id_usuario");
+                usuario = usuarioDAO.buscaUsuario(idUsuario);
+                artigo.setUsuario(usuario);                
+                artigos.add(artigo);                
             }
         }
         catch(SQLException ex){

@@ -165,7 +165,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-            <% for(ArtigoDAO artigo : artigoDAO.getArtigos){ %>  
+            <% for(Artigo artigo : artigoDAO.getArtigos()){ %>  
                 <div class="post-preview">
                   <a href="page-post.jsp">
                     <h2 class="post-title">

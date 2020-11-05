@@ -37,7 +37,34 @@ public class UsuarioDAO {
         } finally{
             Conexao.closeConnection(con, stm);
         }
-    }   
+    }  
+    
+    public Usuario buscaUsuario(int idUsuario) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stm= null;
+        ResultSet resultado = null;
+        Usuario usuario = new Usuario();
+        try {
+            stm = con.prepareStatement("select * from usuario where id=?");
+            stm.setInt(1, idUsuario);
+            resultado = stm.executeQuery();
+            while(resultado.next()){
+                usuario.setIdUsuario(resultado.getInt("id"));
+                usuario.setNome(resultado.getString("nome"));
+                usuario.setEmail(resultado.getString("email"));   
+                usuario.setCpf(resultado.getString("cpf"));
+                usuario.setPapel(resultado.getInt("papel"));
+                if (resultado.getString("cadastro_aprovado") != null) {                    
+                    usuario.setAprovado(resultado.getString("cadastro_aprovado").charAt(0));
+                }
+            }            
+        } catch (SQLException ex) {
+            System.out.println("Problemas ao conectar com o banco: "+ex);
+        } finally {
+            Conexao.closeConnection(con, stm, resultado);
+        }
+        return usuario;
+    }
      
     public void editar(Usuario usuario, int id) {
         Connection con = Conexao.getConnection();
