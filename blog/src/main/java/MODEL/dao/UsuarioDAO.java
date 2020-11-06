@@ -31,6 +31,7 @@ public class UsuarioDAO {
             stm.setString(3, usuario.getSenha());
             stm.setString(4, usuario.getCpf());
             stm.setInt(5, usuario.getPapel());
+            stm.setInt(6, usuario.getAprovado());
             stm.executeUpdate();
         }catch (SQLException ex) {
             System.out.println("Problemas ao conectar ao banco: "+ex);
@@ -156,11 +157,19 @@ public class UsuarioDAO {
         ResultSet resultado = null;
         List <Usuario> usuarios = new ArrayList();
         try {
-            stm = con.prepareStatement("SELECT * from usuario where cadastro_aprovado=?");
-            stm.setInt(1, 0);
+            stm = con.prepareStatement("SELECT * from usuario where cadastro_aprovado=? "
+                    + "or cadastro_aprovado=?");
+            stm.setString(1, "N");
+            stm.setString(1, null);
             resultado = stm.executeQuery();
             while(resultado.next()){
-                usuarios.add((Usuario)resultado);
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(resultado.getInt("id"));
+                usuario.setNome(resultado.getString("nome"));
+                usuario.setCpf(resultado.getString("cpf"));
+                usuario.setEmail(resultado.getString("email"));
+                usuario.setPapel(resultado.getInt("papel"));
+                usuarios.add(usuario);
             }
             
         }

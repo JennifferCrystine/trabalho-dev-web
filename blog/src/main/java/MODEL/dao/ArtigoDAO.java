@@ -89,9 +89,9 @@ public class ArtigoDAO {
             resultado = stm.executeQuery();
             while(resultado.next()) {
                 Artigo artigo = new Artigo();
-                Categoria categoria = new Categoria();
+                Categoria categoria;
                 CategoriaDAO categoriaDAO = new CategoriaDAO();
-                Usuario usuario = new Usuario();
+                Usuario usuario;
                 UsuarioDAO usuarioDAO = new UsuarioDAO();
                 artigo.setIdArtigo(resultado.getInt("id"));
                 int idCategoria = resultado.getInt("id_categoria");                
@@ -100,6 +100,8 @@ public class ArtigoDAO {
                 int idUsuario = resultado.getInt("id_usuario");
                 usuario = usuarioDAO.buscaUsuario(idUsuario);
                 artigo.setUsuario(usuario);                
+                artigo.setTitulo(resultado.getString("titulo"));
+                artigo.setConteudo(resultado.getString("conteudo"));
                 artigos.add(artigo);                
             }
         }

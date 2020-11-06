@@ -7,12 +7,15 @@ package CONTROLLER;
 import MODEL.dao.UsuarioDAO;
 import MODEL.classes.Usuario;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+import java.util.List;
+
 
 /**
  *
@@ -25,6 +28,13 @@ public class UsuarioCadastro extends HttpServlet {
     public UsuarioCadastro(){
         super();
         usuarioDAO = new UsuarioDAO();
+    }
+    
+    
+    public List<Usuario> mostrarUsuarioNaoAprovado() {
+        List <Usuario> usuarios;
+        usuarios = usuarioDAO.getUsuariosNaoAprovados();
+        return usuarios;        
     }
 
     @Override
@@ -45,21 +55,19 @@ public class UsuarioCadastro extends HttpServlet {
         usuario.setCpf(request.getParameter("cpf"));
         usuario.setNome(request.getParameter("name"));
         usuario.setEmail(request.getParameter("email"));
-        usuario.setCpf(request.getParameter("login"));
         usuario.setSenha(request.getParameter("password"));
         usuario.setAprovado('N');
-        
-        String papel = (request.getParameter("roles"));
+        String papel = request.getParameter("roles");
         switch (papel) {
-            case "Administrador":
+            case "option1":
                 usuario.setPapel(0); 
                 break;
                
-            case "Autor":
+            case "option2":
                 usuario.setPapel(1);
                 break;
                 
-            case "Comentarista":
+            case "option3":
                 usuario.setPapel(2);
                 break;       
         }
@@ -82,20 +90,9 @@ public class UsuarioCadastro extends HttpServlet {
             view.forward(request, response);
         
         }
+        //eu acabo isso aqui e ele redireciona para /UsuarioCadastrado aminha duvida eh sera
+        //será que eu coloco esse bloco lá pra cima?
         
-        
-//        if(request.getParameter("editar") == null)//se a variavel for null, cria Usuário
-//        {
-//            this.usuarioDAO.criar(usuario);
-//            RequestDispatcher view= request.getRequestDispatcher("/.jsp");//redireciona para pagina de login
-//            view.forward(request, response);
-//        }
-//        else if (request.getParameter("editar").equals("editar"))//se nao for igual a "editar", edita o Aluno
-//        {
-//            this.usuarioDAO.editar(usuario, usuario.getIdUsuario());
-//            RequestDispatcher view= request.getRequestDispatcher("/index.jsp");//redireciona para index
-//            view.forward(request, response);
-//        }
     }
 
 

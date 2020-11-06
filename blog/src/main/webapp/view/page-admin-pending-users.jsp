@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="CONTROLLER.UsuarioCadastro"%>
+<%@page import="MODEL.classes.Usuario"%>
 <!-- Pending users page -->
 
 <!DOCTYPE html>
@@ -41,7 +43,7 @@
                 <a class="nav-link" href="page-admin-authorized-users.jsp">Usuários Autorizados</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="page-admin-pending-posts.jsp">Postagens Pendentes</a>
+                <a class="nav-link" href="Administrador">Postagens Pendentes</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" >Sair</a>
@@ -74,149 +76,23 @@
                                 <th>&nbsp;</th>
                             </tr>
                         </thead>
+                         <% UsuarioCadastro usuarioCTRL = new UsuarioCadastro();%>
                         <tbody>
                             <tr>
                                 <td>
-                                    <p class="user-link">Mila Kunis</p>
+                                    <% for(Usuario usuario : usuarioCTRL.mostrarUsuarioNaoAprovado()){ %>
+                                    <p class="user-link"><% out.println(usuario.getNome());%></p>
                                 </td>
                                 <td class="text-center">
-                                    <span class="label label-default">Admin</span>
+                                    <span class="label label-default"><% out.println(usuario.getPapel(usuario.getPapel())); %></span>
                                 </td>
                                 <td>
-                                    <p>mila@kunis.com</p>
+                                    <p><% out.println(usuario.getEmail());%></p>
                                 </td>
                                 <td  class="text-center" style="width: 20%;">
                                     <button type="button" class="btn btn-success">Aprovar</button>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="user-link">George Clooney</a>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-success">Autor</span>
-                                </td>
-                                <td>
-                                    <p>marlon@brando.com</p>
-                                </td>
-                                <td  class="text-center" style="width: 20%;">
-                                    <button type="button" class="btn btn-success">Aprovar</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="user-link">Ryan Gossling</p>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-danger">Comentarista</span>
-                                </td>
-                                <td>
-                                    <p>jack@nicholson</p>
-                                </td>
-                                <td  class="text-center" style="width: 20%;">
-                                    <button type="button" class="btn btn-success">Aprovar</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="user-link">Emma Watson</p>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-warning">Excluído</span>
-                                </td>
-                                <td>
-                                    <p>humphrey@bogart.com</p>
-                                </td>
-                                <td  class="text-center" style="width: 20%;">
-                                    <button type="button" class="btn btn-success">Aprovar</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="user-link">Robert Downey Jr.</p>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-success">Autor</span>
-                                </td>
-                                <td>
-                                    <p>spencer@tracy</p>
-                                </td>
-                                <td  class="text-center" style="width: 20%;">
-                                    <button type="button" class="btn btn-success">Aprovar</button>
-                                </td>
-                                
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="user-link">Mila Kunis</p>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-default">Admin</span>
-                                </td>
-                                <td>
-                                    <p>mila@kunis.com</p>
-                                </td>
-                                <td  class="text-center" style="width: 20%;">
-                                    <button type="button" class="btn btn-success">Aprovar</button>
-                                </td>
-                                
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="user-link">George Clooney</p>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-success">Comentarista</span>
-                                </td>
-                                <td>
-                                    <p>marlon@brando.com</p>
-                                </td>
-                                <td  class="text-center" style="width: 20%;">
-                                    <button type="button" class="btn btn-success">Aprovar</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="user-link">Ryan Gossling</p>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-danger">Excluído</span>
-                                </td>
-                                <td>
-                                    <p>jack@nicholson</p>
-                                </td>
-                                <td  class="text-center" style="width: 20%;">
-                                    <button type="button" class="btn btn-success">Aprovar</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="user-link">Emma Watson</p>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-warning">Admin</span>
-                                </td>
-                                <td>
-                                    <p>humphrey@bogart.com</p>
-                                </td>
-                                <td  class="text-center" style="width: 20%;">
-                                    <button type="button" class="btn btn-success">Aprovar</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="user-link">Robert Downey Jr.</p>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-success">Autor</span>
-                                </td>
-                                <td>
-                                    <p>spencer@tracy</p>
-                                </td>
-                                <td  class="text-center" style="width: 20%;">
-                                    <button type="button" class="btn btn-success">Aprovar</button>
-                                </td>
-                            </tr>
+                            </tr>               
                         </tbody>
                     </table>
                 </div>

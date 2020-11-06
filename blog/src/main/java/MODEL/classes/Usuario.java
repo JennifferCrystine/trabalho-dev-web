@@ -68,11 +68,29 @@ public class Usuario {
         return cpf;
     }
 
-    public char isAprovado() {
+    public char getAprovado() {
         return aprovado;
     }
 
     public int getPapel() {
         return papel;
-    }  
+    }
+    
+    public String getPapel(int papel) {
+        String r;
+        switch (papel) {
+            case 0:
+                r = "Admin";
+                break;
+            case 1:
+                r = "Autor";
+                break;
+            case 2:
+                r = "Comentarista";
+                break;
+            default:
+                r = null;
+        }
+        return r;        
+    }
 }

@@ -4,7 +4,6 @@
     Author     : jenniffercrystine
 --%>
 <%@page import="CONTROLLER.ArtigoController"%>
-<%@page import="MODEL.dao.ArtigoDAO"%>
 <%@page import="MODEL.classes.Artigo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -88,7 +87,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form id="form-signup" action="UsuarioCadastro" method="POST">
+            <form id="form-signup" action="UsuarioCadastro" method="post">
               <div class="form-group">
                 <label for="user-name" class="col-form-label">Nome:</label>
                 <input type="text" class="form-control" id="user-name" name="name">
@@ -128,12 +127,13 @@
                   Comentarista
                 </label>
               </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Cadastrar-se</button>
+              </div>
             </form>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Cadastrar-se</button>
-          </div>
+          
         </div>
       </div>
     </div>
@@ -143,7 +143,6 @@
     <script src="assets/js/jquery-3.5.1.min.js"></script>
     <script src="node_modules/@popperjs/core/lib/popper.js"></script>
     <script src="assets/js/bootstrap/bootstrap.min.js"></script>
-    <script src="assets/js/form_validation.js"></script>
 
     <!-- Header -->
     <header class="masthead" style="background-image: url('assets/img/header-background.jpg')">
@@ -161,19 +160,19 @@
     </header>
    
     <!-- Main Content -->
-    <% ArtigoDAO artigoDAO = new ArtigoDAO();%>
+    <% ArtigoController artigoCTRL = new ArtigoController();%>
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-            <% for(Artigo artigo : artigoDAO.getArtigos()){ %>  
+            <% for(Artigo artigo : artigoCTRL.mostrarArtigos()){ %>  
                 <div class="post-preview">
                   <a href="page-post.jsp">
                     <h2 class="post-title">
-                        <% artigo.getTitulo();%>
+                        <% out.println(artigo.getTitulo());%>
                     </h2>
                   </a>
-                  <p class="post-category"><% artigo.getCategoria();%></p>
-                  <p class="post-meta"><% artigo.getUsuario().getNome();%></p>
+                  <p class="post-category"><% out.println(artigo.getCategoria().getDescricao());%></p>
+                  <p class="post-meta"><% out.println(artigo.getUsuario().getNome());%></p>
                 </div>
                 <hr>
             <% }%>          
@@ -184,8 +183,6 @@
         </div>
       </div>
     </div>
-    
-
     <!-- Footer -->
     <hr class="mt-5">
     <footer>
