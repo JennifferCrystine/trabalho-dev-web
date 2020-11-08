@@ -7,7 +7,6 @@ package CONTROLLER;
 import MODEL.dao.UsuarioDAO;
 import MODEL.classes.Usuario;
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,6 +29,10 @@ public class UsuarioCadastro extends HttpServlet {
         usuarioDAO = new UsuarioDAO();
     }
     
+    public void aprova(Usuario usuario, int id, String acao) {
+        usuarioDAO.editar(usuario, id, acao);
+    }
+    
     
     public List<Usuario> mostrarUsuarioNaoAprovado() {
         List <Usuario> usuarios;
@@ -40,11 +43,10 @@ public class UsuarioCadastro extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String acao = request.getParameter("acao");//cria uma variavel que define a acao do doGet
         Usuario usuario = (Usuario)request.getSession().getAttribute("usuario");
         request.getSession().setAttribute("usuario", usuario);//salva Usuário na seção
-        
-        
+        RequestDispatcher view= request.getRequestDispatcher("Login");//redireciona para home de usuario não logado
+        view.forward(request, response);
     }
 
     @Override
@@ -71,26 +73,30 @@ public class UsuarioCadastro extends HttpServlet {
                 usuario.setPapel(2);
                 break;       
         }
+//        String acao = request.getParameter("aprovar");;
         
-        usuarioDAO.criar(usuario);
-        if (usuarioDAO.isAdmin(usuario)) {            
-                RequestDispatcher view = request.getRequestDispatcher("Administrador"); //envia pra home
-                view.forward(request, response);
+        int id;
+        id = usuarioDAO.criar(usuario);
+        usuario.setIdUsuario(id);
+        
+        if (usuarioDAO.isAdmin(usuario) == true) {            
+            RequestDispatcher view = request.getRequestDispatcher("Administrador"); //envia pra home
+            view.forward(request, response);
         }
-        else if (usuarioDAO.isAutor(usuario)) {            
-                RequestDispatcher view = request.getRequestDispatcher("Autor"); //envia pra home
-                view.forward(request, response);
+        else if (usuarioDAO.isAutor(usuario) == true) {            
+            RequestDispatcher view = request.getRequestDispatcher("Autor"); //envia pra home
+            view.forward(request, response);
         }
-        else if (usuarioDAO.isComentarista(usuario)) {            
-                RequestDispatcher view = request.getRequestDispatcher("Comentarista"); //envia pra home
-                view.forward(request, response);
+        else if (usuarioDAO.isComentarista(usuario) == true) {            
+            RequestDispatcher view = request.getRequestDispatcher("Comentarista"); //envia pra home
+            view.forward(request, response);
         }
-        else {
-            RequestDispatcher view= request.getRequestDispatcher("/index.jsp");//redireciona para home
+        else { //caso algo dê errado
+            RequestDispatcher view= request.getRequestDispatcher("Login");//redireciona para home de usuario não logado
             view.forward(request, response);
         
         }
-        //eu acabo isso aqui e ele redireciona para /UsuarioCadastrado aminha duvida eh sera
+        //eu acabo isso aqui e ele redireciona para /UsuarioCadastrado a minha duvida eh sera
         //será que eu coloco esse bloco lá pra cima?
         
     }

@@ -20,24 +20,33 @@ import java.util.List;
 public class UsuarioDAO {
     private final int INF = -9999; //variavel usada para representar valor infinito
     
-    public void criar(Usuario usuario) {
+    public int criar(Usuario usuario) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm= null;
+        ResultSet resultado = null;
+        int response = INF;
         try {
             stm=con.prepareStatement("INSERT into usuario(nome,email,"
-                    + "senha,cpf,papel) VALUES (?,?,?,?,?) ");
+                    + "senha,cpf,papel) VALUES (?,?,?,?,?)");
             stm.setString(1, usuario.getNome());
             stm.setString(2, usuario.getEmail());
             stm.setString(3, usuario.getSenha());
             stm.setString(4, usuario.getCpf());
             stm.setInt(5, usuario.getPapel());
-            stm.setInt(6, usuario.getAprovado());
-            stm.executeUpdate();
+            response = stm.executeUpdate();
+            if (response == 1) {
+                stm=con.prepareStatement("select LAST_INSERT_ID() as idUsuario");
+                resultado = stm.executeQuery();
+                if (resultado.next()) {
+                    usuario.setIdUsuario(resultado.getInt("idUsuario"));
+                }
+            }
         }catch (SQLException ex) {
             System.out.println("Problemas ao conectar ao banco: "+ex);
         } finally{
             Conexao.closeConnection(con, stm);
         }
+        return response;
     }  
     
     public Usuario buscaUsuario(int idUsuario) {
@@ -67,25 +76,48 @@ public class UsuarioDAO {
         return usuario;
     }
      
-    public void editar(Usuario usuario, int id) {
+    public void editar(Usuario usuario, int id, String acao) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
+        String cadAprov = null;
         try {
             stm=con.prepareStatement("UPDATE usuario\n" +
-                                    "SET nome = ?, email = ?, senha = ?, cpf = ?,\n" +
-                                    "where id = ?;");
+                                "SET nome = ?, email = ?, senha = ?, "
+                    + "cpf = ?, cadastro_aprovado=?\n" +
+                                "where id = ?;");
+
+            if (usuario.getAprovado() == 'S') {
+                cadAprov = "S";
+            }
             stm.setString(1, usuario.getNome());
             stm.setString(2, usuario.getEmail());
             stm.setString(3, usuario.getSenha());
             stm.setString(4, usuario.getCpf());
-            stm.setInt(5, usuario.getIdUsuario());
-            stm.executeUpdate();
-            
+
+            stm.setString(5, cadAprov);
+            stm.setInt(6, usuario.getIdUsuario());
+            stm.executeUpdate();            
         }catch (SQLException ex) {
             System.out.println("Problemas ao conectar ao banco: "+ex);
         } finally{
             Conexao.closeConnection(con, stm);
         }
+    }
+    
+    public void aprovaCadastroUsuario(int id) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stm = null;
+        try {
+            stm=con.prepareStatement("UPDATE usuario cadastro_aprovado=?\n" +
+                                "where id = ?;");
+            stm.setString(1, "S");
+            stm.executeUpdate();            
+        }catch (SQLException ex) {
+            System.out.println("Problemas ao conectar ao banco: "+ex);
+        } finally{
+            Conexao.closeConnection(con, stm);
+        }
+        
     }
         
     public void remover(Usuario usuario) {
@@ -104,17 +136,23 @@ public class UsuarioDAO {
         }
     }
     
-    public int checaSeAprovado(int id) {
+    public boolean checaSeAprovado(int id) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
         ResultSet resultado = null;
-        int status = INF;
+        char status = 'E'; //empty ou vazio
         try {
             stm = con.prepareStatement("SELECT cadastro_aprovado from usuario where id =?");
             stm.setInt(1, id);
             resultado = stm.executeQuery();            
             while(resultado.next()){
-                status = resultado.getInt("cadastro_aprovado");
+                status = resultado.getString("cadastro_aprovado").charAt(0);
+            }
+            if (status == 'N' || status == 'E'){
+                return false;
+            }
+            else if (status == 'S') {
+                return true;
             }
             
         }
@@ -124,8 +162,7 @@ public class UsuarioDAO {
         finally {
             Conexao.closeConnection(con, stm, resultado);            
         }
-        return status;
-        
+        return false;
     }
     
     public List<Usuario> getUsuariosAprovados() {
@@ -139,8 +176,7 @@ public class UsuarioDAO {
             resultado = stm.executeQuery();            
             while(resultado.next()){
                 usuarios.add((Usuario)resultado);
-            }
-            
+            }    
         }
         catch(SQLException ex){
             System.out.println("Problemas ao conectar ao banco: "+ex);
@@ -158,9 +194,8 @@ public class UsuarioDAO {
         List <Usuario> usuarios = new ArrayList();
         try {
             stm = con.prepareStatement("SELECT * from usuario where cadastro_aprovado=? "
-                    + "or cadastro_aprovado=?");
+                    + "or cadastro_aprovado is null");
             stm.setString(1, "N");
-            stm.setString(1, null);
             resultado = stm.executeQuery();
             while(resultado.next()){
                 Usuario usuario = new Usuario();
@@ -209,7 +244,7 @@ public class UsuarioDAO {
     } 
    
      
-    public int checaPapel (Usuario usuario) {
+    public int retornaPapel (Usuario usuario) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm; 
         ResultSet resultado = null;
@@ -217,7 +252,7 @@ public class UsuarioDAO {
         
         try {
             stm = con.prepareStatement("select papel from usuario where id = ?");
-            stm.setInt(0, usuario.getIdUsuario());
+            stm.setInt(1, usuario.getIdUsuario());
             resultado = stm.executeQuery();
             while(resultado.next()) {
                 papel = resultado.getInt("papel");
@@ -229,36 +264,33 @@ public class UsuarioDAO {
     }
     
      public boolean isAdmin(Usuario usuario) {
-        int papel = checaPapel(usuario);
-        if (papel == INF || papel != 0){
+        int papel = retornaPapel(usuario);       
+        if (papel == 0){
+            return true;
+        }  
+        else{
             return false;
         }        
-        else if (papel == 0){
-            return true;
-        }        
-        return false;
     }
      
     public boolean isAutor(Usuario usuario) {
-        int papel = checaPapel(usuario);
-        if (papel == INF || papel != 1){
+        int papel = retornaPapel(usuario);       
+        if (papel == 1){
+            return true;
+        }  
+        else{
             return false;
         }        
-        else if (papel == 1){
-            return true;
-        }        
-        return false;
     }
     
     public boolean isComentarista(Usuario usuario) {
-        int papel = checaPapel(usuario);
-        if (papel == INF || papel != 2){
+        int papel = retornaPapel(usuario);       
+        if (papel == 2){
+            return true;
+        }  
+        else{
             return false;
         }        
-        else if (papel == 2){
-            return true;
-        }        
-        return false;
     }
 }
 

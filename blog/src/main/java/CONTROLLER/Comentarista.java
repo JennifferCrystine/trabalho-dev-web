@@ -25,7 +25,7 @@ public class Comentarista extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher view = request.getRequestDispatcher("/page-commentator-home.jsp");
+        RequestDispatcher view = request.getRequestDispatcher("page-commentator-home.jsp");
         view.forward(request, response);
     }
 

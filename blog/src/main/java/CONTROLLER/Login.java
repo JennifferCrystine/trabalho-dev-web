@@ -23,29 +23,15 @@ public class Login extends HttpServlet {
     
     UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.getSession().setAttribute("usuario", null); 
-//        request.getRequestDispatcher("../../webapp/VIEW/index.jsp").forward(request, response);
+            throws ServletException, IOException {        
+        request.getSession().invalidate();
+        request.getSession().setAttribute("usuario", null);        
+        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -53,11 +39,13 @@ public class Login extends HttpServlet {
         String cpf = request.getParameter("cpf");  //recupera o login informado
         String senha = request.getParameter("password");   //recupera a senha informada
         
+        //depois que o campo cpf se tornar único, pegar o usuário pelo cpf e fazer a validação
         Usuario usuario = new Usuario();
         
         usuario = usuarioDAO.validarUsuario(cpf, senha);
         int id = usuario.getIdUsuario();
-        if (usuarioDAO.checaSeAprovado(id) == 1) {
+        
+        if (usuarioDAO.checaSeAprovado(id) == true) {
             if (usuarioDAO.isAdmin(usuario)) {
                 request.getSession().setAttribute("usuario", usuario);
                 Cookie cookieLogin=new Cookie("login", cpf);   //implementação de cookie dos dados de login
@@ -88,10 +76,11 @@ public class Login extends HttpServlet {
                 cookieSenha.setMaxAge(60*60);
                 response.addCookie(cookieLogin);
                 response.addCookie(cookieSenha);
-                RequestDispatcher view = request.getRequestDispatcher("/page-author-home.jsp"); //envia pra home
+                RequestDispatcher view = request.getRequestDispatcher("Comentarista"); //envia pra home
                 view.forward(request, response);
             }
         }
+        //fazer uma página para dizer que o usuario não possui acesso àquela area sem fazer login
         
         
     }
