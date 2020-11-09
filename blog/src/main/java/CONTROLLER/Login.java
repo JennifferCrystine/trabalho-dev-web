@@ -22,6 +22,8 @@ import javax.servlet.RequestDispatcher;
 public class Login extends HttpServlet {
     
     UsuarioDAO usuarioDAO = new UsuarioDAO();
+    
+    //Fazer função de validação de cpf no banco pra garantir que cpf eh único
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -35,17 +37,19 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+              
         String cpf = request.getParameter("cpf");  //recupera o login informado
         String senha = request.getParameter("password");   //recupera a senha informada
         
         //depois que o campo cpf se tornar único, pegar o usuário pelo cpf e fazer a validação
-        Usuario usuario = new Usuario();
-        
-        usuario = usuarioDAO.validarUsuario(cpf, senha);
+        Usuario usuario = usuarioDAO.buscaUsuario(cpf);
         int id = usuario.getIdUsuario();
         
-        if (usuarioDAO.checaSeAprovado(id) == true) {
+        
+        boolean existe = usuarioDAO.validarUsuario(cpf, senha);
+        boolean aprovado = usuarioDAO.checaSeAprovado(id);
+        
+        if (existe == true && aprovado == true) {
             if (usuarioDAO.isAdmin(usuario)) {
                 request.getSession().setAttribute("usuario", usuario);
                 Cookie cookieLogin=new Cookie("login", cpf);   //implementação de cookie dos dados de login
@@ -79,6 +83,10 @@ public class Login extends HttpServlet {
                 RequestDispatcher view = request.getRequestDispatcher("Comentarista"); //envia pra home
                 view.forward(request, response);
             }
+        }
+        else {
+            RequestDispatcher view = request.getRequestDispatcher("index.jsp");
+            view.forward(request, response);
         }
         //fazer uma página para dizer que o usuario não possui acesso àquela area sem fazer login
         

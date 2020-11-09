@@ -27,12 +27,13 @@ public class UsuarioDAO {
         int response = INF;
         try {
             stm=con.prepareStatement("INSERT into usuario(nome,email,"
-                    + "senha,cpf,papel) VALUES (?,?,?,?,?)");
+                    + "senha,cpf,papel,cadastro_aprovado) VALUES (?,?,?,?,?,?)");
             stm.setString(1, usuario.getNome());
             stm.setString(2, usuario.getEmail());
             stm.setString(3, usuario.getSenha());
             stm.setString(4, usuario.getCpf());
-            stm.setInt(5, usuario.getPapel());
+            stm.setInt(5, usuario.getPapel());            
+            stm.setInt(6, 0);
             response = stm.executeUpdate();
             if (response == 1) {
                 stm=con.prepareStatement("select LAST_INSERT_ID() as idUsuario");
@@ -49,14 +50,14 @@ public class UsuarioDAO {
         return response;
     }  
     
-    public Usuario buscaUsuario(int idUsuario) {
+    public Usuario buscaUsuario(String cpf) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm= null;
         ResultSet resultado = null;
         Usuario usuario = new Usuario();
         try {
-            stm = con.prepareStatement("select * from usuario where id=?");
-            stm.setInt(1, idUsuario);
+            stm = con.prepareStatement("select * from usuario where cpf=? limit 1");
+            stm.setString(1, cpf);
             resultado = stm.executeQuery();
             while(resultado.next()){
                 usuario.setIdUsuario(resultado.getInt("id"));
@@ -64,9 +65,7 @@ public class UsuarioDAO {
                 usuario.setEmail(resultado.getString("email"));   
                 usuario.setCpf(resultado.getString("cpf"));
                 usuario.setPapel(resultado.getInt("papel"));
-                if (resultado.getString("cadastro_aprovado") != null) {                    
-                    usuario.setAprovado(resultado.getString("cadastro_aprovado").charAt(0));
-                }
+                usuario.setAprovado(resultado.getString("cadastro_aprovado").charAt(0));
             }            
         } catch (SQLException ex) {
             System.out.println("Problemas ao conectar com o banco: "+ex);
@@ -75,6 +74,32 @@ public class UsuarioDAO {
         }
         return usuario;
     }
+    
+    public Usuario buscaUsuario(int id) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stm= null;
+        ResultSet resultado = null;
+        Usuario usuario = new Usuario();
+        try {
+            stm = con.prepareStatement("select * from usuario where id=?");
+            stm.setInt(1, id);
+            resultado = stm.executeQuery();
+            while(resultado.next()){
+                usuario.setIdUsuario(resultado.getInt("id"));
+                usuario.setNome(resultado.getString("nome"));
+                usuario.setEmail(resultado.getString("email"));   
+                usuario.setCpf(resultado.getString("cpf"));
+                usuario.setPapel(resultado.getInt("papel"));
+                usuario.setAprovado(resultado.getString("cadastro_aprovado").charAt(0));
+            }            
+        } catch (SQLException ex) {
+            System.out.println("Problemas ao conectar com o banco: "+ex);
+        } finally {
+            Conexao.closeConnection(con, stm, resultado);
+        }
+        return usuario;
+    }
+    
      
     public void editar(Usuario usuario, int id, String acao) {
         Connection con = Conexao.getConnection();
@@ -108,9 +133,10 @@ public class UsuarioDAO {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
         try {
-            stm=con.prepareStatement("UPDATE usuario cadastro_aprovado=?\n" +
-                                "where id = ?;");
-            stm.setString(1, "S");
+            stm=con.prepareStatement("UPDATE usuario set cadastro_aprovado=?\n" +
+                                "where id = ?");
+            stm.setInt(1, 1);
+            stm.setInt(2, id);
             stm.executeUpdate();            
         }catch (SQLException ex) {
             System.out.println("Problemas ao conectar ao banco: "+ex);
@@ -195,7 +221,7 @@ public class UsuarioDAO {
         try {
             stm = con.prepareStatement("SELECT * from usuario where cadastro_aprovado=? "
                     + "or cadastro_aprovado is null");
-            stm.setString(1, "N");
+            stm.setInt(1, 0);
             resultado = stm.executeQuery();
             while(resultado.next()){
                 Usuario usuario = new Usuario();
@@ -217,30 +243,30 @@ public class UsuarioDAO {
         return usuarios;
     }
      
-     public Usuario validarUsuario (String cpf, String senha) {
+     public boolean validarUsuario (String cpf, String senha) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm; 
         ResultSet resultado = null;
         Usuario usuario = new Usuario();
+        boolean existe = false;
         try{
             stm = con.prepareStatement("select * from usuario where cpf = ? and "
                     + "senha = ?");
             stm.setString(1, cpf);
             stm.setString(2, senha);
             resultado = stm.executeQuery();
-            while(resultado.next()){
-               usuario.setIdUsuario(resultado.getInt("id"));
-               usuario.setNome(resultado.getString("nome"));
-               usuario.setEmail(resultado.getString("email"));
-               usuario.setSenha(resultado.getString("senha"));
-               usuario.setCpf(resultado.getString("cpf"));
+            if(resultado.next() == true){
+                existe = true;
+            }
+            else {
+                existe = false;
             }
         } catch (SQLException ex) {
             System.out.println("Problemas ao conectar ao banco: "+ex);
         } finally{
             Conexao.closeConnection(con, null, resultado);
         }
-        return usuario;
+        return existe;
     } 
    
      

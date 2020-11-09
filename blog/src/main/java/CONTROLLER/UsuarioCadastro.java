@@ -73,31 +73,13 @@ public class UsuarioCadastro extends HttpServlet {
                 usuario.setPapel(2);
                 break;       
         }
-//        String acao = request.getParameter("aprovar");;
         
         int id;
         id = usuarioDAO.criar(usuario);
         usuario.setIdUsuario(id);
-        
-        if (usuarioDAO.isAdmin(usuario) == true) {            
-            RequestDispatcher view = request.getRequestDispatcher("Administrador"); //envia pra home
-            view.forward(request, response);
-        }
-        else if (usuarioDAO.isAutor(usuario) == true) {            
-            RequestDispatcher view = request.getRequestDispatcher("Autor"); //envia pra home
-            view.forward(request, response);
-        }
-        else if (usuarioDAO.isComentarista(usuario) == true) {            
-            RequestDispatcher view = request.getRequestDispatcher("Comentarista"); //envia pra home
-            view.forward(request, response);
-        }
-        else { //caso algo dê errado
-            RequestDispatcher view= request.getRequestDispatcher("Login");//redireciona para home de usuario não logado
-            view.forward(request, response);
-        
-        }
-        //eu acabo isso aqui e ele redireciona para /UsuarioCadastrado a minha duvida eh sera
-        //será que eu coloco esse bloco lá pra cima?
+        RequestDispatcher view= request.getRequestDispatcher("Login");
+        //redireciona para o index de usuario não logado porque cadastro ainda não aprovado
+        view.forward(request, response); 
         
     }
 

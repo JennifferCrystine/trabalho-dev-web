@@ -90,11 +90,9 @@
                                         <p><% out.println(usuario.getEmail());%></p>
                                     </td>                                
                                     <td  class="text-center" style="width: 20%;">
-                                        <form action="UsuarioCadastro" method="post">
-                                            <input type="hidden" id="aprovar"  name="aprovar" value="aprovar">
-                                            <button type="button" class="btn btn-success" 
-                                                    <a method="GET" href="AprovarUsuarioController?id=<%usuario.getIdUsuario();%>">Aprovar</a> 
-                                           </button>
+                                        <form action="UsuarioCadastro" method="post"> 
+                                            <a method="GET" href="AprovarUsuarioController?id=<%= usuario.getIdUsuario()%>">Aprovar</a>
+                                          
                                         </form>                                        
                                     </td> 
                                 </tr> 
