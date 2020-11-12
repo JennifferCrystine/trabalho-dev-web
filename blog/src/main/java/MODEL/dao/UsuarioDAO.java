@@ -25,6 +25,7 @@ public class UsuarioDAO {
         PreparedStatement stm= null;
         ResultSet resultado = null;
         int response = INF;
+        byte cad = 0;
         try {
             stm=con.prepareStatement("INSERT into usuario(nome,email,"
                     + "senha,cpf,papel,cadastro_aprovado) VALUES (?,?,?,?,?,?)");
@@ -33,7 +34,7 @@ public class UsuarioDAO {
             stm.setString(3, usuario.getSenha());
             stm.setString(4, usuario.getCpf());
             stm.setInt(5, usuario.getPapel());            
-            stm.setInt(6, 0);
+            stm.setByte(6, cad);
             response = stm.executeUpdate();
             if (response == 1) {
                 stm=con.prepareStatement("select LAST_INSERT_ID() as idUsuario");
@@ -59,13 +60,13 @@ public class UsuarioDAO {
             stm = con.prepareStatement("select * from usuario where cpf=? limit 1");
             stm.setString(1, cpf);
             resultado = stm.executeQuery();
-            while(resultado.next()){
+            if (resultado.next()){
                 usuario.setIdUsuario(resultado.getInt("id"));
                 usuario.setNome(resultado.getString("nome"));
                 usuario.setEmail(resultado.getString("email"));   
                 usuario.setCpf(resultado.getString("cpf"));
                 usuario.setPapel(resultado.getInt("papel"));
-                usuario.setAprovado(resultado.getString("cadastro_aprovado").charAt(0));
+                usuario.setAprovado(resultado.getByte("cadastro_aprovado"));
             }            
         } catch (SQLException ex) {
             System.out.println("Problemas ao conectar com o banco: "+ex);
@@ -73,6 +74,34 @@ public class UsuarioDAO {
             Conexao.closeConnection(con, stm, resultado);
         }
         return usuario;
+    }
+    
+    public boolean verificaCPF(Object object) {
+        
+        Connection con = Conexao.getConnection();
+        PreparedStatement stm= null;
+        ResultSet resultado = null;
+        boolean existeCPF = false;
+        String cpf = null;
+        try {
+            if (object instanceof Usuario){
+                cpf = ((Usuario) object).getCpf();                
+            }
+            else if (object instanceof String) {
+                cpf = (String)object;
+            }
+            stm = con.prepareStatement("select * from usuario where cpf=?");
+            stm.setString(1, cpf);
+            resultado = stm.executeQuery();
+            if (resultado.next()){ //existe usuario com aquele cpf
+                existeCPF = true;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Problemas ao conectar com o banco: "+ex);
+        } finally {
+            Conexao.closeConnection(con, stm, resultado);
+        }
+        return existeCPF; 
     }
     
     public Usuario buscaUsuario(int id) {
@@ -90,7 +119,7 @@ public class UsuarioDAO {
                 usuario.setEmail(resultado.getString("email"));   
                 usuario.setCpf(resultado.getString("cpf"));
                 usuario.setPapel(resultado.getInt("papel"));
-                usuario.setAprovado(resultado.getString("cadastro_aprovado").charAt(0));
+                usuario.setAprovado(resultado.getByte("cadastro_aprovado"));
             }            
         } catch (SQLException ex) {
             System.out.println("Problemas ao conectar com o banco: "+ex);
@@ -104,22 +133,21 @@ public class UsuarioDAO {
     public void editar(Usuario usuario, int id, String acao) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
-        String cadAprov = null;
+        byte cadAprov = 0;
         try {
             stm=con.prepareStatement("UPDATE usuario\n" +
                                 "SET nome = ?, email = ?, senha = ?, "
                     + "cpf = ?, cadastro_aprovado=?\n" +
                                 "where id = ?;");
 
-            if (usuario.getAprovado() == 'S') {
-                cadAprov = "S";
+            if (usuario.getAprovado() == 1) {
+                cadAprov = 1;
             }
             stm.setString(1, usuario.getNome());
             stm.setString(2, usuario.getEmail());
             stm.setString(3, usuario.getSenha());
             stm.setString(4, usuario.getCpf());
-
-            stm.setString(5, cadAprov);
+            stm.setByte(5, cadAprov);
             stm.setInt(6, usuario.getIdUsuario());
             stm.executeUpdate();            
         }catch (SQLException ex) {
@@ -142,8 +170,7 @@ public class UsuarioDAO {
             System.out.println("Problemas ao conectar ao banco: "+ex);
         } finally{
             Conexao.closeConnection(con, stm);
-        }
-        
+        } 
     }
         
     public void remover(Usuario usuario) {
@@ -166,21 +193,18 @@ public class UsuarioDAO {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
         ResultSet resultado = null;
-        char status = 'E'; //empty ou vazio
+        byte status = 0; //empty ou vazio
+        boolean aprovado = false;
         try {
             stm = con.prepareStatement("SELECT cadastro_aprovado from usuario where id =?");
             stm.setInt(1, id);
             resultado = stm.executeQuery();            
-            while(resultado.next()){
-                status = resultado.getString("cadastro_aprovado").charAt(0);
+            if(resultado.next()){
+                status = resultado.getByte("cadastro_aprovado");    
             }
-            if (status == 'N' || status == 'E'){
-                return false;
-            }
-            else if (status == 'S') {
-                return true;
-            }
-            
+            if (status == 1){
+                aprovado = true;
+            }            
         }
         catch(SQLException ex){
             System.out.println("Problemas ao conectar ao banco: "+ex);
@@ -188,7 +212,7 @@ public class UsuarioDAO {
         finally {
             Conexao.closeConnection(con, stm, resultado);            
         }
-        return false;
+        return aprovado;
     }
     
     public List<Usuario> getUsuariosAprovados() {
@@ -213,41 +237,40 @@ public class UsuarioDAO {
         return usuarios;
     }
     
-     public List<Usuario> getUsuariosNaoAprovados() {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stm = null;
-        ResultSet resultado = null;
-        List <Usuario> usuarios = new ArrayList();
-        try {
-            stm = con.prepareStatement("SELECT * from usuario where cadastro_aprovado=? "
-                    + "or cadastro_aprovado is null");
-            stm.setInt(1, 0);
-            resultado = stm.executeQuery();
-            while(resultado.next()){
-                Usuario usuario = new Usuario();
-                usuario.setIdUsuario(resultado.getInt("id"));
-                usuario.setNome(resultado.getString("nome"));
-                usuario.setCpf(resultado.getString("cpf"));
-                usuario.setEmail(resultado.getString("email"));
-                usuario.setPapel(resultado.getInt("papel"));
-                usuarios.add(usuario);
-            }
-            
-        }
-        catch(SQLException ex){
-            System.out.println("Problemas ao conectar ao banco: "+ex);
-        }
-        finally {
-            Conexao.closeConnection(con, stm, resultado);            
-        }
-        return usuarios;
-    }
-     
-     public boolean validarUsuario (String cpf, String senha) {
+    public List<Usuario> getUsuariosNaoAprovados() {
+       Connection con = Conexao.getConnection();
+       PreparedStatement stm = null;
+       ResultSet resultado = null;
+       List <Usuario> usuarios = new ArrayList();
+       try {
+           stm = con.prepareStatement("SELECT * from usuario where cadastro_aprovado=? "
+                   + "or cadastro_aprovado is null");
+           stm.setInt(1, 0);
+           resultado = stm.executeQuery();
+           while(resultado.next()){
+               Usuario usuario = new Usuario();
+               usuario.setIdUsuario(resultado.getInt("id"));
+               usuario.setNome(resultado.getString("nome"));
+               usuario.setCpf(resultado.getString("cpf"));
+               usuario.setEmail(resultado.getString("email"));
+               usuario.setPapel(resultado.getInt("papel"));
+               usuarios.add(usuario);
+           }
+
+       }
+       catch(SQLException ex){
+           System.out.println("Problemas ao conectar ao banco: "+ex);
+       }
+       finally {
+           Conexao.closeConnection(con, stm, resultado);            
+       }
+       return usuarios;
+   }
+
+    public boolean validarUsuario (String cpf, String senha) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm; 
         ResultSet resultado = null;
-        Usuario usuario = new Usuario();
         boolean existe = false;
         try{
             stm = con.prepareStatement("select * from usuario where cpf = ? and "
@@ -257,9 +280,6 @@ public class UsuarioDAO {
             resultado = stm.executeQuery();
             if(resultado.next() == true){
                 existe = true;
-            }
-            else {
-                existe = false;
             }
         } catch (SQLException ex) {
             System.out.println("Problemas ao conectar ao banco: "+ex);
@@ -290,33 +310,15 @@ public class UsuarioDAO {
     }
     
      public boolean isAdmin(Usuario usuario) {
-        int papel = retornaPapel(usuario);       
-        if (papel == 0){
-            return true;
-        }  
-        else{
-            return false;
-        }        
+        return usuario.getPapel() == 0;    
     }
      
     public boolean isAutor(Usuario usuario) {
-        int papel = retornaPapel(usuario);       
-        if (papel == 1){
-            return true;
-        }  
-        else{
-            return false;
-        }        
+        return usuario.getPapel() == 1;         
     }
     
     public boolean isComentarista(Usuario usuario) {
-        int papel = retornaPapel(usuario);       
-        if (papel == 2){
-            return true;
-        }  
-        else{
-            return false;
-        }        
+        return usuario.getPapel() == 2;         
     }
 }
 

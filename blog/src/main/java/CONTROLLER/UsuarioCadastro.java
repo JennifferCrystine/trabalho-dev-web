@@ -22,7 +22,7 @@ import java.util.List;
  */
 @WebServlet(name = "UsuarioCadastro", urlPatterns = {"/UsuarioCadastro"})
 public class UsuarioCadastro extends HttpServlet {
-    private UsuarioDAO usuarioDAO;
+    private final UsuarioDAO usuarioDAO;
 
     public UsuarioCadastro(){
         super();
@@ -33,6 +33,10 @@ public class UsuarioCadastro extends HttpServlet {
         usuarioDAO.editar(usuario, id, acao);
     }
     
+    public boolean checaCPF(String cpf) {
+        boolean existe = usuarioDAO.verificaCPF(cpf);
+        return existe;       
+    }
     
     public List<Usuario> mostrarUsuarioNaoAprovado() {
         List <Usuario> usuarios;
@@ -58,7 +62,7 @@ public class UsuarioCadastro extends HttpServlet {
         usuario.setNome(request.getParameter("name"));
         usuario.setEmail(request.getParameter("email"));
         usuario.setSenha(request.getParameter("password"));
-        usuario.setAprovado('N');
+        usuario.setAprovado((byte)0);
         String papel = request.getParameter("roles");
         switch (papel) {
             case "option1":
@@ -74,12 +78,19 @@ public class UsuarioCadastro extends HttpServlet {
                 break;       
         }
         
-        int id;
+        boolean existe = usuarioDAO.verificaCPF(usuario);
+        int id;        
         id = usuarioDAO.criar(usuario);
         usuario.setIdUsuario(id);
         RequestDispatcher view= request.getRequestDispatcher("Login");
+        view.forward(request, response);
+//        if (existe == false) {
+//            
+//            
+//        }
+        
         //redireciona para o index de usuario não logado porque cadastro ainda não aprovado
-        view.forward(request, response); 
+         
         
     }
 

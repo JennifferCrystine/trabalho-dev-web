@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import MODEL.classes.Usuario;
 import MODEL.dao.UsuarioDAO;
-import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
 /**
  *
@@ -37,49 +37,33 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-              
-        String cpf = request.getParameter("cpf");  //recupera o login informado
-        String senha = request.getParameter("password");   //recupera a senha informada
-        
+
+        String cpf = request.getParameter("login-cpf");  //recupera o login informado
+        String senha = request.getParameter("login-password");   //recupera a senha informada
+
         //depois que o campo cpf se tornar único, pegar o usuário pelo cpf e fazer a validação
         Usuario usuario = usuarioDAO.buscaUsuario(cpf);
-        int id = usuario.getIdUsuario();
-        
-        
+        int id = usuario.getIdUsuario();  
         boolean existe = usuarioDAO.validarUsuario(cpf, senha);
         boolean aprovado = usuarioDAO.checaSeAprovado(id);
         
         if (existe == true && aprovado == true) {
             if (usuarioDAO.isAdmin(usuario)) {
-                request.getSession().setAttribute("usuario", usuario);
-                Cookie cookieLogin=new Cookie("login", cpf);   //implementação de cookie dos dados de login
-                Cookie cookieSenha= new Cookie("senha",senha);
-                cookieLogin.setMaxAge(60*60);
-                cookieSenha.setMaxAge(60*60);
-                response.addCookie(cookieLogin);
-                response.addCookie(cookieSenha);
+                request.getSession().setAttribute("usuario", usuario);                
+                request.getSession().setAttribute("logado", "true");
                 RequestDispatcher view = request.getRequestDispatcher("Administrador"); //envia pra home
                 view.forward(request, response);
             }
             else if (usuarioDAO.isAutor(usuario)) {
+                request.getSession().setAttribute("usuario", usuario);                
+                request.getSession().setAttribute("logado", "true");
                 request.getSession().setAttribute("usuario", usuario);
-                Cookie cookieLogin=new Cookie("login", cpf);   //implementação de cookie dos dados de login
-                Cookie cookieSenha= new Cookie("senha",senha);
-                cookieLogin.setMaxAge(60*60);
-                cookieSenha.setMaxAge(60*60);
-                response.addCookie(cookieLogin);
-                response.addCookie(cookieSenha);
                 RequestDispatcher view = request.getRequestDispatcher("Autor"); //envia pra home
                 view.forward(request, response);
             }
             else if (usuarioDAO.isComentarista(usuario)) {
-                request.getSession().setAttribute("usuario", usuario);
-                Cookie cookieLogin=new Cookie("login", cpf);   //implementação de cookie dos dados de login
-                Cookie cookieSenha= new Cookie("senha",senha);
-                cookieLogin.setMaxAge(60*60);
-                cookieSenha.setMaxAge(60*60);
-                response.addCookie(cookieLogin);
-                response.addCookie(cookieSenha);
+                request.getSession().setAttribute("usuario", usuario);                
+                request.getSession().setAttribute("logado", "true");
                 RequestDispatcher view = request.getRequestDispatcher("Comentarista"); //envia pra home
                 view.forward(request, response);
             }

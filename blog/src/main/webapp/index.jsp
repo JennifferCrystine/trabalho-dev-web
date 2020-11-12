@@ -19,7 +19,6 @@
     <title>Home</title>
   </head>
   <body>
-
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
@@ -55,23 +54,23 @@
             </button>
           </div>
           <div class="modal-body">
-            <form action="Login" method="POST" id="form-login">
+            <form id="form-login" action="Login" method="post">
               <div class="form-group">
                 <label for="user-cpf" class="col-form-label">CPF:</label>
-                <input type="number" class="form-control" id="user-cpf" name="cpf" required="required" placeholder="Informe seu CPF">
-                <span class='msg-erro msg-cpf' style="color: red; display: none;"></span>
+                <input type="number" class="form-control" id="user-cpf" name="login-cpf" placeholder="Informe seu CPF">
+                <span class='msg-erro msg-cpf-login' style="color: red; display: none;"></span>
               </div>
               <div class="form-group">
                 <label for="user-password" class="col-form-label">Senha:</label>
-                <input type="password" class="form-control" id="user-password" name="password" required="required" placeholder="Informe sua senha"></input>
-                <span class='msg-erro msg-password' style="color: red; display: none;"></span>
+                <input type="password" class="form-control" id="user-password" name="login-password" placeholder="Informe sua senha"></input>
+                <span class='msg-erro msg-password-login' style="color: red; display: none;"></span>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Entrar</button>
               </div>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-primary" onclick=validateLogin()>Entrar</button>
-          </div>
+          </div>          
         </div>
       </div>
     </div>
@@ -88,50 +87,49 @@
           </div>
           <div class="modal-body">
             <form id="form-signup" action="UsuarioCadastro" method="post">
-              <div class="form-group">
-                <label for="user-name" class="col-form-label">Nome:</label>                
-                <input type="hidden" class="form-control" id="cadastrar" name="cadastrar" value="cadastrar">
-                <input type="text" class="form-control" id="user-name" name="name">
-                <span class='msg-erro msg-name' style="color: red; display: none;"></span>
-              </div>
-              <div class="form-group">
-                <label for="user-cpf" class="col-form-label">CPF:</label>
-                <input type="number" class="form-control" id="user-cpf-signup" name="cpf">
-                <span class='msg-erro msg-cpf-signup' style="color: red; display: none;"></span>
-              </div>
-              <div class="form-group">
-                <label for="user-email" class="col-form-label">E-mail:</label>
-                <input type="email" class="form-control" id="user-email" name="email">
-                <span class='msg-erro msg-email' style="color: red; display: none;"></span>
-              </div>
-              <div class="form-group">
-                <label for="user-password" class="col-form-label">Senha:</label>
-                <input type="password" class="form-control" id="user-password-signup" name="password"></input>
-                <span class='msg-erro msg-password-signup' style="color: red; display: none;"></span>
-              </div>
-              <p>Selecione o papel desejado:</p>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="roles" id="defaultCheck1" value="option1">
-                <label class="form-check-label" for="defaultCheck1">
-                  Administrador
-                </label>
-              </div>
-              <div class="form-check">                
-                <input class="form-check-input" type="radio" name="roles" id="defaultCheck2" value="option2">
-                <label class="form-check-label" for="defaultCheck2">
-                  Autor
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="roles" id="defaultCheck3" value="option3">
-                <label class="form-check-label" for="defaultCheck3">
-                  Comentarista
-                </label>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Cadastrar-se</button>
-              </div>
+                <div class="form-group">
+                  <label for="user-name" class="col-form-label">Nome:</label>                
+                  <input type="text" class="form-control" id="user-name" name="name">
+                  <span class='msg-erro msg-name' style="color: red; display: none;"></span>
+                </div>
+                <div class="form-group">
+                  <label for="user-cpf" class="col-form-label">CPF:</label>
+                  <input type="number" class="form-control" id="user-cpf-signup" name="cpf">
+                  <span class='msg-erro msg-cpf-signup' style="color: red; display: none;"></span>
+                </div>
+                <div class="form-group">
+                  <label for="user-email" class="col-form-label">E-mail:</label>
+                  <input type="email" class="form-control" id="user-email" name="email">
+                  <span class='msg-erro msg-email' style="color: red; display: none;"></span>
+                </div>
+                <div class="form-group">
+                  <label for="user-password" class="col-form-label">Senha:</label>
+                  <input type="password" class="form-control" id="user-password-signup" name="password"></input>
+                  <span class='msg-erro msg-password-signup' style="color: red; display: none;"></span>
+                </div>
+                <p>Selecione o papel desejado:</p>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="roles" id="defaultCheck1" value="option1">
+                  <label class="form-check-label" for="defaultCheck1">
+                    Administrador
+                  </label>
+                </div>
+                <div class="form-check">                
+                  <input class="form-check-input" type="radio" name="roles" id="defaultCheck2" value="option2">
+                  <label class="form-check-label" for="defaultCheck2">
+                    Autor
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="roles" id="defaultCheck3" value="option3">
+                  <label class="form-check-label" for="defaultCheck3">
+                    Comentarista
+                  </label>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                  <button type="submit" class="btn btn-primary">Cadastrar-se</button>
+                </div>
             </form>
           </div>
           
@@ -142,8 +140,8 @@
     <!-- JavaScript (Opcional) -->
     <!-- jQuery, Popper.js, Bootstrap JS --> 
     <script src="assets/js/jquery-3.5.1.min.js"></script>
-    <script src="node_modules/@popperjs/core/lib/popper.js"></script>
     <script src="assets/js/bootstrap/bootstrap.min.js"></script>
+    <!-- <script src="assets/js/form_validation.js"></script> -->
 
     <!-- Header -->
     <header class="masthead" style="background-image: url('assets/img/header-background.jpg')">
