@@ -54,7 +54,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form id="form-login" action="Login" method="post">
+            <form id="form-login" action="Login" method="GET">
               <div class="form-group">
                 <label for="user-cpf" class="col-form-label">CPF:</label>
                 <input type="number" class="form-control" id="user-cpf" name="login-cpf" placeholder="Informe seu CPF">
@@ -163,7 +163,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-            <% for(Artigo artigo : artigoCTRL.mostrarArtigos()){ %>  
+            <% for(Artigo artigo : artigoCTRL.mostrarArtigos("S")){ %>  
                 <div class="post-preview">
                   <a href="page-post.jsp">
                     <h2 class="post-title">
@@ -171,7 +171,7 @@
                     </h2>
                   </a>
                   <p class="post-category"><% out.println(artigo.getCategoria().getDescricao());%></p>
-                  <p class="post-meta"><% out.println(artigo.getUsuario().getNome());%></p>
+                  <p class="post-meta">Postado por <% out.println(artigo.getUsuario().getNome());%></p>
                 </div>
                 <hr>
             <% }%>          

@@ -4,6 +4,11 @@
     Author     : jenniffercrystine
 --%>
 
+
+<%@page import="CONTROLLER.ArtigoController"%>
+<%@page import="MODEL.classes.Artigo"%>
+<%@page import="MODEL.classes.Usuario"%>
+<%@page import="javax.servlet.http.HttpServletRequest"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!-- Author's pending posts page -->
 <!DOCTYPE html>
@@ -19,6 +24,7 @@
     <title>Postagens Pendentes</title>
   </head>
   <body>
+     
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
@@ -31,7 +37,7 @@
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
               <li class="nav-item">
-                <a class="nav-link" href="page-home-author.jsp">Home</a>
+                <a class="nav-link" href="page-author-home.jsp">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="page-author-create-post.jsp">Criar Postagem</a>
@@ -40,7 +46,7 @@
                 <a class="nav-link" href="page-author-pending-posts.jsp">Minhas postagens pendentes</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="">Sair</a>
+                <a class="nav-link" method="POST" href="Logout">Sair</a>
               </li>
             </ul>
           </div>
@@ -56,58 +62,26 @@
     <!-- Main Content -->
     <div class="container mt-5">
         <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="post-preview">
-              <a href="page-post.jsp">
-                <h2 class="post-title">
-                  Exemplo de título de post 1
-                </h2>
-                <h3 class="post-subtitle">
-                  Lorem ipsum dolor sit amet.
-                </h3>
-              </a>
-              <p class="post-category">Política</p>
-              <p class="post-meta">Postado por Nome do Autor em 25 de Outubro, 2020</p>
-            </div>
-            <hr>
-            <div class="post-preview">
-              <a href="page-post.jsp">
-                <h2 class="post-title">
-                  Exemplo de título de post 2
-                </h2>
-                <h3 class="post-subtitle">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing.
-                </h3>
-              </a>
-              <p class="post-category">Esporte</p>
-              <p class="post-meta">Postado por Nome do Autor em 23 de Outubro, 2020</p>
-            </div>
-            <hr>
-            <div class="post-preview">
-              <a href="page-post.jsp">
-                <h2 class="post-title">
-                  Exemplo de título de post 3
-                </h2>
-                <h3 class="post-subtitle">
-                  Ut commodo, purus id sodales convallis, urna.
-                </h3>
-              </a>
-              <p class="post-category">Cultura</p>
-              <p class="post-meta">Postado por Nome do Autor em 23 de Outubro, 2020</p>
-            </div>
-            <hr>
-            <div class="post-preview">
-              <a href="page-post.jsp">
-                <h2 class="post-title">
-                  Exemplo de título de post 4
-                </h2>
-                <h3 class="post-subtitle">
-                  In pellentesque ligula sed ultricies consequat. Curabitur pulvinar tortor eu.              </h3>
-              </a>
-              <p class="post-category">Arte</p>
-              <p class="post-meta">Postado por Nome do Autor em 20 de Outubro, 2020</p>
-            </div>
-            <hr>
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <% Usuario usuario = (Usuario)request.getSession().getAttribute("usuario"); 
+                    int id = 0;
+                    if (usuario != null) {
+                       id = usuario.getIdUsuario();
+                    }
+                   ArtigoController artigoCTRL = new ArtigoController();
+                 %>
+                <% for(Artigo artigo : artigoCTRL.autorArtigos(id, "S")) { %>
+                    <div class="post-preview">
+                      <a href="page-post.jsp">
+                        <h2 class="post-title">
+                          <% out.println(artigo.getTitulo());%>
+                        </h2>
+                      </a>
+                      <p class="post-category"><% out.println(artigo.getCategoria().getDescricao());%></p>
+                      <p class="post-meta">Postado por <% out.println(artigo.getUsuario().getNome());%></p>
+                    </div>
+                    <hr>
+                <%}%>            
             <!-- Pager -->
             <div class="clearfix">
               <a class="btn btn-primary float-right" href="#">Posts antigos&rarr;</a>

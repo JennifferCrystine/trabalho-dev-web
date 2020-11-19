@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="CONTROLLER.ArtigoController"%>
+<%@page import="MODEL.classes.Artigo"%>
 <!-- Author's home page -->
 
 <!DOCTYPE html>
@@ -70,60 +72,22 @@
     </header>
    
     <!-- Main Content -->
+    <% ArtigoController artigoCTRL = new ArtigoController();%>
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="post-preview">
-            <a href="page-post.jsp">
-              <h2 class="post-title">
-                Exemplo de título de post 1
-              </h2>
-              <h3 class="post-subtitle">
-                Lorem ipsum dolor sit amet.
-              </h3>
-            </a>
-            <p class="post-category">Política</p>
-            <p class="post-meta">Postado por Nome do Autor em 25 de Outubro, 2020</p>
-          </div>
-          <hr>
-          <div class="post-preview">
-            <a href="page-post.jsp">
-              <h2 class="post-title">
-                Exemplo de título de post 2
-              </h2>
-              <h3 class="post-subtitle">
-                Lorem ipsum dolor sit amet, consectetur adipiscing.
-              </h3>
-            </a>
-            <p class="post-category">Esporte</p>
-            <p class="post-meta">Postado por Nome do Autor em 23 de Outubro, 2020</p>
-          </div>
-          <hr>
-          <div class="post-preview">
-            <a href="page-post.jsp">
-              <h2 class="post-title">
-                Exemplo de título de post 3
-              </h2>
-              <h3 class="post-subtitle">
-                Ut commodo, purus id sodales convallis, urna.
-              </h3>
-            </a>
-            <p class="post-category">Cultura</p>
-            <p class="post-meta">Postado por Nome do Autor em 23 de Outubro, 2020</p>
-          </div>
-          <hr>
-          <div class="post-preview">
-            <a href="page-post.jsp">
-              <h2 class="post-title">
-                Exemplo de título de post 4
-              </h2>
-              <h3 class="post-subtitle">
-                In pellentesque ligula sed ultricies consequat. Curabitur pulvinar tortor eu.              </h3>
-            </a>
-            <p class="post-category">Arte</p>
-            <p class="post-meta">Postado por Nome do Autor em 20 de Outubro, 2020</p>
-          </div>
-          <hr>
+            <% for(Artigo artigo : artigoCTRL.mostrarArtigos("S")){ %> 
+                <div class="post-preview">
+                    <a href="page-post.jsp">
+                      <h2 class="post-title">
+                        <% out.println(artigo.getTitulo());%>
+                      </h2>
+                    </a>
+                    <p class="post-category"><% out.println(artigo.getCategoria().getDescricao());%></p>
+                    <p class="post-meta">Postado por <% out.println(artigo.getUsuario().getNome());%></p>
+                </div>
+                <hr>
+             <% }%>         
           <!-- Pager -->
           <div class="clearfix">
             <a class="btn btn-primary float-right" href="#">Posts antigos&rarr;</a>
