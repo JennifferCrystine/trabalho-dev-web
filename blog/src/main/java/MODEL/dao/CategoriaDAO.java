@@ -5,12 +5,15 @@
  */
 package MODEL.dao;
 
+import MODEL.classes.Artigo;
 import MODEL.classes.Categoria;
 import MODEL.utilitarios.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -86,4 +89,27 @@ public class CategoriaDAO {
             Conexao.closeConnection(con, stm);
         }
     }  
+    
+      public List<Categoria> getCategorias() {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stm= null;
+        ResultSet resultado = null;        
+        List <Categoria> categorias = new ArrayList();
+        
+        try {
+            stm = con.prepareStatement("select * from categoria");
+            resultado = stm.executeQuery();
+            while(resultado.next()){
+                Categoria categoria = new Categoria();
+                categoria.setIdCategoria(resultado.getInt("id"));
+                categoria.setDescricao(resultado.getString("descricao"));  
+                categorias.add(categoria);
+            }            
+        } catch (SQLException ex) {
+            System.out.println("Problemas ao conectar com o banco: "+ex);
+        } finally {
+            Conexao.closeConnection(con, stm, resultado);
+        }
+        return categorias;
+    }
 }

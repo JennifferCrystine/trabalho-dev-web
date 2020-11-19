@@ -78,14 +78,22 @@ public class ArtigoDAO {
     }   
     
     
-    public List<Artigo> getArtigos() {
+    public List<Artigo> getArtigos(String aprovado) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
         ResultSet resultado = null;
+        String s = null;
         List <Artigo> artigos = new ArrayList();
-        
+        if (aprovado.equals("S")) {
+            s = "S";
+        }
+        else if (aprovado.equals("N")) {
+            s = "N";        
+        }
+            
         try {
-            stm = con.prepareStatement("select * from artigo");
+            stm = con.prepareStatement("select * from artigo where aprovado = ?");
+            stm.setString(1, s);
             resultado = stm.executeQuery();
             while(resultado.next()) {
                 Artigo artigo = new Artigo();
@@ -113,4 +121,50 @@ public class ArtigoDAO {
         }
         return artigos;
     }
+    
+    public List<Artigo> getUsuarioArtigos(int id, String aprovado) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stm = null;
+        ResultSet resultado = null;
+        List <Artigo> artigos = new ArrayList();
+        String s = null;
+        if (aprovado.equals("S")) {
+            s = "S";
+        }
+        else if (aprovado.equals("N")) {
+            s = "N";        
+        }
+        
+        try {
+            stm = con.prepareStatement("select * from artigo where id_usuario = ?  "
+                    + "and aprovado = ?");
+            stm.setInt(1, id);
+            stm.setString(2, s);
+            resultado = stm.executeQuery();
+            while(resultado.next()) {
+                Artigo artigo = new Artigo();
+                Categoria categoria;
+                CategoriaDAO categoriaDAO = new CategoriaDAO();
+                Usuario usuario;
+                UsuarioDAO usuarioDAO = new UsuarioDAO();
+                artigo.setIdArtigo(resultado.getInt("id"));
+                int idCategoria = resultado.getInt("id_categoria");                
+                categoria = categoriaDAO.buscaCategoria(idCategoria);
+                artigo.setCategoria(categoria);
+                int idUsuario = resultado.getInt("id_usuario");
+                usuario = usuarioDAO.buscaUsuario(idUsuario);
+                artigo.setUsuario(usuario);                
+                artigo.setTitulo(resultado.getString("titulo"));
+                artigo.setConteudo(resultado.getString("conteudo"));
+                artigos.add(artigo);                  
+            }
+        }
+        catch(SQLException ex){
+            System.out.println("Problemas ao conectar ao banco: "+ex);
+        }
+        finally {
+            Conexao.closeConnection(con, stm, resultado);
+        }
+        return artigos;
+    }   
 }
