@@ -8,6 +8,7 @@ package CONTROLLER;
 import java.io.IOException;
 import MODEL.classes.Artigo;
 import MODEL.dao.ArtigoDAO;
+import MODEL.classes.Usuario;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -27,12 +28,22 @@ public class ArtigoController extends HttpServlet {
     ArtigoDAO artigoDAO = new ArtigoDAO();
     
     
-    public List<Artigo> mostrarArtigos() {
-        List <Artigo> artigos = new ArrayList();
-        artigos = artigoDAO.getArtigos();
+    public List<Artigo> mostrarArtigos(String aprovado) {
+        List <Artigo> artigos;
+        artigos = artigoDAO.getArtigos(aprovado);
         return artigos;        
-    }
+    } 
+    
+    public List<Artigo> autorArtigos(int id, String aprovado) {
+        List <Artigo> artigos;
+        artigos = artigoDAO.getUsuarioArtigos(id, aprovado);
+        return artigos;        
+    }  
+    
+    
+    
 
+    
 //    @Override
 //    protected void doGet(HttpServletRequest request, HttpServletResponse response)
 //            throws ServletException, IOException {

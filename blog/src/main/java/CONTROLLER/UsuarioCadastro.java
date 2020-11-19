@@ -77,17 +77,11 @@ public class UsuarioCadastro extends HttpServlet {
                 usuario.setPapel(2);
                 break;       
         }
-        
-        boolean existe = usuarioDAO.verificaCPF(usuario);
         int id;        
         id = usuarioDAO.criar(usuario);
         usuario.setIdUsuario(id);
         RequestDispatcher view= request.getRequestDispatcher("Login");
         view.forward(request, response);
-//        if (existe == false) {
-//            
-//            
-//        }
         
         //redireciona para o index de usuario não logado porque cadastro ainda não aprovado
          

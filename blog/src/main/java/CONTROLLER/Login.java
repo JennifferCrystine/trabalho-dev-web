@@ -27,17 +27,7 @@ public class Login extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {        
-        request.getSession().invalidate();
-        request.getSession().setAttribute("usuario", null);        
-        request.getRequestDispatcher("index.jsp").forward(request, response);
-    }
-
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+            throws ServletException, IOException {  
         String cpf = request.getParameter("login-cpf");  //recupera o login informado
         String senha = request.getParameter("login-password");   //recupera a senha informada
 
@@ -49,12 +39,18 @@ public class Login extends HttpServlet {
         
         if (existe == true && aprovado == true) {
             if (usuarioDAO.isAdmin(usuario)) {
+                if(request.getSession(false) != null) {
+                    request.getSession().invalidate();
+                }
                 request.getSession().setAttribute("usuario", usuario);                
                 request.getSession().setAttribute("logado", "true");
                 RequestDispatcher view = request.getRequestDispatcher("Administrador"); //envia pra home
                 view.forward(request, response);
             }
             else if (usuarioDAO.isAutor(usuario)) {
+                if(request.getSession(false) != null) {
+                    request.getSession().invalidate();
+                }
                 request.getSession().setAttribute("usuario", usuario);                
                 request.getSession().setAttribute("logado", "true");
                 request.getSession().setAttribute("usuario", usuario);
@@ -62,6 +58,9 @@ public class Login extends HttpServlet {
                 view.forward(request, response);
             }
             else if (usuarioDAO.isComentarista(usuario)) {
+                if(request.getSession(false) != null) {
+                    request.getSession().invalidate();
+                }
                 request.getSession().setAttribute("usuario", usuario);                
                 request.getSession().setAttribute("logado", "true");
                 RequestDispatcher view = request.getRequestDispatcher("Comentarista"); //envia pra home
@@ -71,9 +70,25 @@ public class Login extends HttpServlet {
         else {
             RequestDispatcher view = request.getRequestDispatcher("index.jsp");
             view.forward(request, response);
+        }    
+    }
+
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+           
+    }
+    public void isLogado(HttpServletRequest request, Usuario usuario) {
+        boolean logado = false;
+        if (request.getSession(false) != null){
+            logado = true;
+            usuarioDAO.isAdmin(usuario);
+            
+            
         }
-        //fazer uma página para dizer que o usuario não possui acesso àquela area sem fazer login
-        
-        
+
+            
     }
 }
