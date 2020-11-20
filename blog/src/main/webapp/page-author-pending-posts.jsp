@@ -70,9 +70,9 @@
                     }
                    ArtigoController artigoCTRL = new ArtigoController();
                  %>
-                <% for(Artigo artigo : artigoCTRL.autorArtigos(id, "S")) { %>
+                <% for(Artigo artigo : artigoCTRL.autorArtigos(id, "N")) { %>
                     <div class="post-preview">
-                      <a href="page-post.jsp">
+                      <a href="page-post.jsp" method="GET" href="ArtigoController?id=<%= artigo.getIdArtigo() %>
                         <h2 class="post-title">
                           <% out.println(artigo.getTitulo());%>
                         </h2>

@@ -4,6 +4,7 @@
     Author     : jenniffercrystine
 --%>
 
+<%@page import="MODEL.classes.Artigo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -52,10 +53,9 @@
             <div class="row">
                 <div class="mx-auto">
                     <div class="post-heading">
-                        <h1>Exemplo de título de post 1</h1>
-                        <h2 class="subheading">Lorem ipsum dolor sit amet.</h2>
-                        <p class="post-category">Política</p>
-                        <span class="meta">Postado por Nome do Autor em 25 de Outubro, 2020</span>
+                        <%Artigo artigo = (Artigo)request.getAttribute("artigo"); %>
+                        <%out.println(artigo); %>
+                        TESTE
                     </div>
                 </div>
             </div>
@@ -66,11 +66,7 @@
     <div class="container post-content">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
-                <p><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec auctor ipsum. Morbi semper pellentesque eros, nec tempor ligula egestas finibus. In et lectus volutpat, accumsan arcu sit amet, tristique ligula. In ultrices elit risus, quis varius dolor accumsan id. Quisque id tincidunt quam, tempus pulvinar sem. Donec placerat gravida mattis. Suspendisse suscipit tellus velit, sed rutrum nunc facilisis nec. Ut vulputate est ac varius vehicula. Duis turpis orci, placerat sed odio ut, posuere congue ligula. Vestibulum non blandit nibh. Maecenas tempor condimentum diam nec vehicula. Praesent malesuada faucibus metus, vel porta lectus ullamcorper vitae.</span>
-
-                <span>Sed pretium elementum massa, quis laoreet eros mattis ut. Praesent placerat, dolor et suscipit consectetur, lacus turpis volutpat arcu, nec molestie augue nibh id erat. In iaculis libero non bibendum tincidunt. Mauris suscipit, ligula at volutpat vehicula, augue leo facilisis est, sed congue libero turpis eu turpis. Maecenas tempor nibh non tellus interdum laoreet. Integer volutpat est in dignissim ornare. Etiam condimentum erat sit amet eros condimentum fringilla. Proin in fermentum sapien. Aenean a pellentesque nunc, id finibus enim. Nunc volutpat nisi eros, nec viverra diam porta non. Sed quis elit id orci placerat gravida. In hac habitasse platea dictumst. Maecenas at mi auctor, bibendum ex eu, malesuada nisi. Nunc lacinia ut massa in vulputate. Morbi viverra et leo vitae commodo. Donec feugiat eleifend leo luctus finibus.</span>
-            
-                <span>Donec et cursus massa, id pretium nunc. Nam fringilla nisl in felis dignissim suscipit. Morbi bibendum accumsan magna nec aliquam. Curabitur vehicula volutpat tincidunt. Nam vel rhoncus felis. Nullam urna lacus, accumsan sed ultrices et, venenatis in velit. Curabitur velit justo, pharetra id consectetur vel, luctus quis diam. Donec ante felis, sagittis quis pellentesque a, tempor a nunc.</span></p>
+                <p><span>ssss</span></p>
             </div>
         </div>
     </div>

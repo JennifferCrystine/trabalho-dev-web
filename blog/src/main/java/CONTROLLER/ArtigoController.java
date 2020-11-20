@@ -46,13 +46,19 @@ public class ArtigoController extends HttpServlet {
     
 
     
-//    @Override
-//    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//        processRequest(request, response);
-//    }
-//
-//
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int idArtigo = Integer.parseInt(request.getParameter("id"));
+        Artigo artigo;
+        artigo = artigoDAO.buscaArtigo(idArtigo);
+//        response.setContentType("text/html");
+//        response.sendRedirect("page-post.jsp?artigo=artigo");
+        request.setAttribute("artigo", artigo);        
+        request.getRequestDispatcher("page-post.jsp").forward(request, response);
+    }
+
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
