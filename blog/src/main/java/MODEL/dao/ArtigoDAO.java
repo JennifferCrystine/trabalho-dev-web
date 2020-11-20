@@ -27,8 +27,8 @@ public class ArtigoDAO {
         Connection con = Conexao.getConnection();
         PreparedStatement stm= null;
         try {
-            stm=con.prepareStatement("INSERT into artigo((usuario,categoria,titulo,"
-                    + "conteudo,liberar,aprovado) VALUES (?,?,?,?,?,?)) ");
+            stm=con.prepareStatement("INSERT into artigo(id_usuario,id_categoria,titulo,"
+                    + "conteudo,liberar,aprovado) VALUES (?,?,?,?,?,?) ");
             stm.setInt(1, artigo.getUsuario().getIdUsuario());
             stm.setInt(2, artigo.getCategoria().getIdCategoria());
             stm.setString(3, artigo.getTitulo());

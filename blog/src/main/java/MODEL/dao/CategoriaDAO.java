@@ -90,7 +90,7 @@ public class CategoriaDAO {
         }
     }  
     
-      public List<Categoria> getCategorias() {
+    public List<Categoria> getCategorias() {
         Connection con = Conexao.getConnection();
         PreparedStatement stm= null;
         ResultSet resultado = null;        

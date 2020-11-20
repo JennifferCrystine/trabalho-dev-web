@@ -3,11 +3,12 @@
     Created on : Nov 2, 2020, 1:56:29 PM
     Author     : jenniffercrystine
 --%>
-
+<%@page import="CONTROLLER.CategoriaController"%>
+<%@page import="MODEL.classes.Categoria"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!-- Create post author's page -->
 <!DOCTYPE html>
-<html lang="pt-br">
+
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -58,32 +59,36 @@
           <div class="col-lg-8 col-md-10 mx-auto">
               <div class="create-post">   
                 <h2>Adicionar nova postagem</h2>
-                <form class="mt-5">
+                <form class="mt-5" action="ArtigoController" method="post">
                   <div class="form-group">
                     <label for="creating-post-title">Título da Postagem</label>
-                    <input type="text" class="form-control" id="creating-post-title" placeholder="Adicione um título a sua postagem aqui">
+                    <input type="text" class="form-control" id="creating-post-title" name="title" placeholder="Adicione um título a sua postagem aqui">
                   </div>
                   <div class="form-group">
                     <label for="creating-ṕost-content">Adicione o conteúdo da postagem</label>
-                    <textarea class="form-control" id="creating-ṕost-content" rows="10" placeholder="Adicione o conteúdo a sua postagem aqui"></textarea>
+                    <textarea class="form-control" id="creating-post-content" rows="10" name="content" placeholder="Adicione o conteúdo a sua postagem aqui"></textarea>
                   </div>
-                  <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Categoria
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <a class="dropdown-item" href="#">Ciência</a>
-                      <a class="dropdown-item" href="#">Cultura</a>
-                      <a class="dropdown-item" href="#">Economia</a>
-                      <a class="dropdown-item" href="#">Educação</a>
-                      <a class="dropdown-item" href="#">Entretenimento</a>
-                      <a class="dropdown-item" href="#">Esporte</a>
-                      <a class="dropdown-item" href="#">Política</a>
-                      <a class="dropdown-item" href="#">Religião</a>
-                      <a class="dropdown-item" href="#">Saúde</a>
-                      <a class="dropdown-item" href="#">Tecnologia</a>
-                      <a class="dropdown-item" href="#">Outra</a>
-                    </div>
+                  <div class="form-group">
+                    <label for="exampleFormControlSelect1">Categoria</label>                  
+                    <% CategoriaController categoriaCTRL = new CategoriaController();%>
+                    <% try {
+                        for (Categoria categoria : categoriaCTRL.getCategorias()) { 
+                            if (categoria != null) { %>
+                                <select class="form-control" id="exampleFormControlSelect1" name="category">
+                                  <option><% out.println(categoria.getDescricao()); %></option>
+                                </select>
+                            <% } else {
+                                    break;
+                               }
+                            }%>                        
+                    <%} catch (NullPointerException ex) { %> 
+                                <select class="form-control" id="exampleFormControlSelect1" name="category">
+                                  <option>Política</option>
+                                  <option>Atualidades</option>
+                                  <option>Artes</option>
+                                  <option>Outros</option>
+                                </select>
+                        <%}%>            
                   </div>
                   <div class="text-center">
                     <button type="submit" class="btn btn-primary">Pedir autorização para postar</button>
