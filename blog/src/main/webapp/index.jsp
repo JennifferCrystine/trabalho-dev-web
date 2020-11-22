@@ -3,6 +3,9 @@
     Created on : Nov 2, 2020, 1:29:29 PM
     Author     : jenniffercrystine
 --%>
+
+<%@page import="MODEL.classes.Usuario"%>
+<%@page import="javax.servlet.http.HttpServletRequest"%>
 <%@page import="CONTROLLER.ArtigoController"%>
 <%@page import="MODEL.classes.Artigo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -163,7 +166,8 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-            <% for(Artigo artigo : artigoCTRL.mostrarArtigos("S")){ %>  
+            <% for(Artigo artigo : artigoCTRL.mostrarArtigos("S")){ 
+                request.getSession().setAttribute("artigo", artigo);%>  
                 <div class="post-preview">
                   <a href="page-post.jsp">
                     <h2 class="post-title">

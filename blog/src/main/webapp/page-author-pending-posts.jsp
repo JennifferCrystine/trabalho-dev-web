@@ -72,8 +72,8 @@
                  %>
                 <% for(Artigo artigo : artigoCTRL.autorArtigos(id, "N")) { %>
                     <div class="post-preview">
-                      <a href="page-post.jsp" method="GET" href="ArtigoController?id=<%= artigo.getIdArtigo() %>
-                        <h2 class="post-title">
+                        <%request.getSession().setAttribute("artigo", artigo); %>
+                      <a href="page-post.jsp" <h2 class="post-title">
                           <% out.println(artigo.getTitulo());%>
                         </h2>
                       </a>

@@ -46,7 +46,7 @@
                 <a class="nav-link" href="Administrador">Postagens Pendentes</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" method="GET" href="Login">Sair</a>
+                <a class="nav-link" method="GET" href="Logout">Sair</a>
               </li>
             
           </ul>

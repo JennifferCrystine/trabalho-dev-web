@@ -40,21 +40,11 @@ public class ArtigoController extends HttpServlet {
         List <Artigo> artigos;
         artigos = artigoDAO.getUsuarioArtigos(id, aprovado);
         return artigos;        
-    }  
-    
-    
-    
-
+    }
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int idArtigo = Integer.parseInt(request.getParameter("id"));
-        Artigo artigo;
-        artigo = artigoDAO.buscaArtigo(idArtigo);
-//        response.setContentType("text/html");
-//        response.sendRedirect("page-post.jsp?artigo=artigo");
-        request.setAttribute("artigo", artigo);        
         request.getRequestDispatcher("page-post.jsp").forward(request, response);
     }
 
@@ -64,7 +54,7 @@ public class ArtigoController extends HttpServlet {
             throws ServletException, IOException {
         Artigo artigo= new Artigo();
         Categoria categoria = new Categoria();
-        Usuario usuario = new Usuario();
+        Usuario usuario;
         
         usuario = (Usuario)request.getSession().getAttribute("usuario");
         

@@ -29,10 +29,6 @@ public class UsuarioCadastro extends HttpServlet {
         usuarioDAO = new UsuarioDAO();
     }
     
-    public void aprova(Usuario usuario, int id, String acao) {
-        usuarioDAO.editar(usuario, id, acao);
-    }
-    
     public boolean checaCPF(String cpf) {
         boolean existe = usuarioDAO.verificaCPF(cpf);
         return existe;       

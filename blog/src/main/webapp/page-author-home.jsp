@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="CONTROLLER.ArtigoController"%>
 <%@page import="MODEL.classes.Artigo"%>
+<%@page import="javax.servlet.http.HttpServletRequest"%>
 <!-- Author's home page -->
 
 <!DOCTYPE html>
@@ -43,7 +44,7 @@
               <a class="nav-link" href="page-author-pending-posts.jsp">Minhas postagens pendentes</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="">Sair</a>
+              <a class="nav-link" method="GET" href="Logout">Sair</a>
             </li>
           </ul>
         </div>
@@ -76,7 +77,8 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-            <% for(Artigo artigo : artigoCTRL.mostrarArtigos("S")){ %> 
+            <% for(Artigo artigo : artigoCTRL.mostrarArtigos("S")){ 
+                request.getSession().setAttribute("artigo", artigo);%> 
                 <div class="post-preview">
                     <a href="page-post.jsp">
                       <h2 class="post-title">
