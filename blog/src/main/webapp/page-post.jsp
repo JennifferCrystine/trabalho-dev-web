@@ -36,9 +36,9 @@
                   <li class="nav-item">
                     <a class="nav-link" href="index.jsp">Home</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="login.jsp">Entrar</a>
-                  </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link" data-toggle="modal" data-target="#loginModal">Entrar</a>
+                    </li>
                 </ul>
               </div>
             </div>

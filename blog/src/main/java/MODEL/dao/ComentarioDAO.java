@@ -6,6 +6,8 @@
 package MODEL.dao;
 import MODEL.classes.Comentario;
 import MODEL.classes.Artigo;
+import MODEL.classes.Usuario;
+import MODEL.dao.UsuarioDAO;
 import MODEL.utilitarios.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +22,7 @@ import java.util.List;
  */
 public class ComentarioDAO {
     
-    public void criar(Comentario comentario) throws SQLException{
+    public void criar(Comentario comentario) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm= null;
         try {
@@ -31,13 +33,13 @@ public class ComentarioDAO {
             stm.setInt(3, comentario.getUsuario().getIdUsuario());
             stm.executeUpdate();
         }catch (SQLException ex) {
-            throw new SQLException("Problemas ao conectar ao banco.");
+            System.out.println("Problemas ao conectar ao banco.");
         } finally{
             Conexao.closeConnection(con, stm);
         }
     }   
      
-    public void editar(Comentario comentario, int id) throws SQLException{
+    public void editar(Comentario comentario, int id) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
         try {
@@ -49,13 +51,13 @@ public class ComentarioDAO {
             stm.executeUpdate();
             
         }catch (SQLException ex) {
-            throw new SQLException("Problemas ao conectar ao banco.");
+            System.out.println("Problemas ao conectar ao banco.");
         } finally{
             Conexao.closeConnection(con, stm);
         }
     }
         
-    public void remover(Comentario comentario) throws SQLException {
+    public void remover(Comentario comentario) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
         try {
@@ -64,29 +66,37 @@ public class ComentarioDAO {
             stm.executeUpdate();
         }
         catch(SQLException ex){
-            throw new SQLException("Problemas ao conectar ao banco.");
+            System.out.println("Problemas ao conectar ao banco.");
         }
         finally {
             Conexao.closeConnection(con, stm);
         }
     }  
     
-    public List<Comentario> getArtigoComentarios(Artigo artigo) throws SQLException {
+    public List<Comentario> getArtigoComentarios(Artigo artigo) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
         ResultSet resultado = null;
         List <Comentario> comentarios = new ArrayList();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
         try {
             stm = con.prepareStatement("SELECT * from comentario where id_artigo=?");
             stm.setInt(1, artigo.getIdArtigo());
             resultado = stm.executeQuery();
             while(resultado.next()){
-                comentarios.add((Comentario)resultado);
+                Comentario comentario = new Comentario();
+                int idUsuario = resultado.getInt("id_usuario");  
+                Usuario usuario;
+                usuario = usuarioDAO.buscaUsuario(idUsuario);
+                comentario.setArtigo(artigo);
+                comentario.setUsuario(usuario);
+                comentario.setComentario(resultado.getString("comentario"));
+                comentarios.add(comentario);
             }
             
         }
         catch(SQLException ex){
-            throw new SQLException("Problemas ao conectar ao banco.");
+            System.out.println("Problemas ao conectar ao banco.");
         }
         finally {
             Conexao.closeConnection(con, stm, resultado);            

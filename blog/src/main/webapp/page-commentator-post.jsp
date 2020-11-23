@@ -5,6 +5,8 @@
 --%>
 <%@page import="MODEL.classes.Artigo"%>
 <%@page import="MODEL.classes.Usuario"%>
+<%@page import="MODEL.classes.Comentario"%>
+<%@page import="CONTROLLER.ComentarioController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -77,18 +79,13 @@
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
                 <h3 class="mb-4">Comentários</h3>
-                <div class="div">
-                    <h5 class="post-commentator-name">Patrícia Alves</h5>
-                    <p class="post-comment-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ac sem pharetra, venenatis dui at, lacinia nisl. Nunc in metus libero. Quisque scelerisque dolor imperdiet, lobortis lacus non, porta ante. Integer vitae enim a mi viverra finibus a vel neque. Cras aliquet enim nunc, at molestie orci ultrices nec. Duis condimentum ipsum et facilisis efficitur. Donec leo ex, pretium et ante vitae, faucibus euismod turpis. Nunc vel volutpat magna.</p>
-                </div>
-                <div class="div">
-                    <h5 class="post-commentator-name">Roberto Almeida</h5>
-                    <p class="post-comment-content">In id diam finibus justo sagittis sollicitudin. Quisque maximus, tellus et vehicula auctor, tellus erat mollis nisi, volutpat suscipit erat urna sit amet ligula. Nunc mattis tortor non malesuada eleifend. In hac habitasse platea dictumst. Suspendisse sollicitudin sem eget porttitor placerat.</p>
-                </div>
-                <div class="div">
-                    <h5 class="post-commentator-name">Ana maria</h5>
-                    <p class="post-comment-content">Pellentesque vitae ultrices dui.</p>
-                </div>
+                <% ComentarioController comentarioCTRL = new ComentarioController(); 
+                for (Comentario comentario : comentarioCTRL.getArtigoComentarios(artigo)) {%>
+                    <div class="div">
+                        <h5 class="post-commentator-name"><%out.println(comentario.getUsuario().getNome()); %></h5>
+                        <p class="post-comment-content"> <%out.println(comentario.getComentario()); %></p>
+                    </div>
+                <%}%>
             </div>
             
         </div>
@@ -96,10 +93,11 @@
     <!-- New comment-->
     <div class="container new-comment mt-3">
         <div class="row">
-            <div class="col-lg-8 col-md-10 mx-auto"><form>
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <form id="form-commentary" action="ComentarioController" method="post">
                     <div class="form-group">
-                      <label for="creating-ṕost-content">Deixe um comentário</label>
-                      <textarea class="form-control" id="creating-ṕost-content" rows="5" placeholder="Comente aqui"></textarea>
+                      <label for="creating-post-content">Deixe um comentário</label>
+                      <textarea class="form-control" id="creating-post-content" name="commentary-content" rows="5" placeholder="Comente aqui"></textarea>
                     </div>
                     <div >
                         <button type="submit" class="btn btn-primary">Pedir autorização para comentar</button>
