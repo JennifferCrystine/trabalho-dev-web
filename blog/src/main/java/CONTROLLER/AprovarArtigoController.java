@@ -21,12 +21,13 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "AprovarArtigoController", urlPatterns = {"/AprovarArtigoController"})
 public class AprovarArtigoController extends HttpServlet {
 
-    ArtigoDAO artigoDAO;
+    ArtigoDAO artigoDAO = new ArtigoDAO();
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));        
+        int id;
+        id = Integer.parseInt(request.getParameter("id"));        
         artigoDAO.aprovaArtigo(id);
         RequestDispatcher view = request.getRequestDispatcher("page-admin-pending-posts.jsp");
         view.forward(request, response);
