@@ -69,10 +69,9 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-            <% for(Artigo artigo : artigoCTRL.mostrarArtigos("S")){ 
-                request.getSession().setAttribute("artigo", artigo);%>  
+            <% for(Artigo artigo : artigoCTRL.mostrarArtigos("S")){ %>  
                 <div class="post-preview">
-                  <a href="page-commentator-post.jsp">
+                  <a href="ComentarioController?id=<%=artigo.getIdArtigo()%>">
                     <h2 class="post-title">
                         <% out.println(artigo.getTitulo());%>
                     </h2>

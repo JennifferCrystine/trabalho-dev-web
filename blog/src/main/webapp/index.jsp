@@ -166,10 +166,9 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-            <% for(Artigo artigo : artigoCTRL.mostrarArtigos("S")){ 
-                request.getSession().setAttribute("artigo", artigo);%>  
+            <% for(Artigo artigo : artigoCTRL.mostrarArtigos("S")){%>  
                 <div class="post-preview">
-                  <a href="page-post.jsp">
+                    <a href="ArtigoController?id=<%=artigo.getIdArtigo()%>">
                     <h2 class="post-title">
                         <% out.println(artigo.getTitulo());%>
                     </h2>
@@ -180,9 +179,6 @@
                 <hr>
             <% }%>          
           <!-- Pager -->
-          <div class="clearfix">
-            <a class="btn btn-primary float-right" href="page-post.jsp">Posts antigos&rarr;</a>
-          </div>
         </div>
       </div>
     </div>

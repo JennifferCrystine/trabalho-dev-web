@@ -5,6 +5,8 @@
  */
 package CONTROLLER;
 
+import MODEL.classes.Artigo;
+import MODEL.dao.ArtigoDAO;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "Comentarista", urlPatterns = {"/Comentarista"})
 public class Comentarista extends HttpServlet {
-
+    ArtigoDAO artigoDAO = new ArtigoDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -32,8 +34,7 @@ public class Comentarista extends HttpServlet {
 //    @Override
 //    protected void doPost(HttpServletRequest request, HttpServletResponse response)
 //            throws ServletException, IOException {
-//        processRequest(request, response);
-//    }
+//        }
 
 
 }

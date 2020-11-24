@@ -10,6 +10,7 @@ import MODEL.classes.Comentario;
 import MODEL.dao.ComentarioDAO;
 import MODEL.classes.Artigo;
 import MODEL.classes.Usuario;
+import MODEL.dao.ArtigoDAO;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,13 +27,16 @@ import java.util.List;
 @WebServlet(name = "ComentarioController", urlPatterns = {"/ComentarioController"})
 public class ComentarioController extends HttpServlet {
     ComentarioDAO comentarioDAO = new ComentarioDAO();
-    
+    ArtigoDAO artigoDAO = new ArtigoDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher view= request.getRequestDispatcher("page-commentator-post.jsp");
-        view.forward(request, response);
+        int id = Integer.parseInt(request.getParameter("id"));
+        Artigo artigo = artigoDAO.buscaArtigo(id);
+        request.getSession().setAttribute("artigo", artigo);
+        request.getRequestDispatcher("page-commentator-post.jsp").forward(request, response);
+    
     }
     
     public List<Comentario> getArtigoComentarios(Artigo artigo){

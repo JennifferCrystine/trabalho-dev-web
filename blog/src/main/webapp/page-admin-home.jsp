@@ -80,10 +80,9 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-        <% for(Artigo artigo : artigoCTRL.mostrarArtigos("S")){ 
-                request.getSession().setAttribute("artigo", artigo);%>
+        <% for(Artigo artigo : artigoCTRL.mostrarArtigos("S")){ %>
           <div class="post-preview">
-            <a href="page-post.jsp">
+            <a href="ArtigoController?id=<%=artigo.getIdArtigo()%>">
               <div class="row post-title-button justify-content-between">
                   <div class="col-10">
                       <h2 class="post-title">
