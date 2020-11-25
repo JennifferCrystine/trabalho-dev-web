@@ -84,9 +84,6 @@
           <hr> 
           <%}%>
           <!-- Pager -->
-          <div class="clearfix">
-            <a class="btn btn-primary float-right" href="#">Posts antigos&rarr;</a>
-          </div>
         </div>
       </div>
     </div>

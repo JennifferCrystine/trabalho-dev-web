@@ -225,7 +225,13 @@ public class UsuarioDAO {
             stm.setInt(1, 1);
             resultado = stm.executeQuery();            
             while(resultado.next()){
-                usuarios.add((Usuario)resultado);
+               Usuario usuario = new Usuario();
+               usuario.setIdUsuario(resultado.getInt("id"));
+               usuario.setNome(resultado.getString("nome"));
+               usuario.setCpf(resultado.getString("cpf"));
+               usuario.setEmail(resultado.getString("email"));
+               usuario.setPapel(resultado.getInt("papel"));
+               usuarios.add(usuario);
             }    
         }
         catch(SQLException ex){

@@ -5,6 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="CONTROLLER.UsuarioController"%>
+<%@page import="MODEL.classes.Usuario"%>
+
 <!-- Autorized users page -->
 
 <!DOCTYPE html>
@@ -75,15 +78,17 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <% UsuarioController usuarioCTRL = new UsuarioController();%>
+                            <% for (Usuario usuario : usuarioCTRL.getUsuariosAprovados()) {%>
                             <tr>
                                 <td>
-                                    <a href="#" class="user-link">Mila Kunis</a>
+                                    <a href="#" class="user-link"><%out.println(usuario.getNome()); %></a>
                                 </td>
                                 <td class="text-center">
-                                    <span class="label label-default">Admin</span>
+                                    <span class="label label-default"><%out.println(usuarioCTRL.getUsuarioPapel(usuario.getPapel())); %></span>
                                 </td>
                                 <td>
-                                    <a href="#">mila@kunis.com</a>
+                                    <a href="#"><%out.println(usuario.getEmail()); %></a>
                                 </td>
                                 <td class="text-center" style="width: 20%;">
                                     <a href="#" class="table-link">
@@ -92,239 +97,15 @@
                                             <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                         </span>
                                     </a>
-                                    <a href="#" class="table-link danger">
+                                    <a href="UsuarioController?id=<%=usuario.getIdUsuario()%>" method="POST" class="table-link danger">
                                         <span class="fa-stack">
                                             <i class="fa fa-square fa-stack-2x"></i>
                                             <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                         </span>
                                     </a>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="#" class="user-link">George Clooney</a>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-success">Autor</span>
-                                </td>
-                                <td>
-                                    <a href="#">marlon@brando.com</a>
-                                </td>
-                                <td class="text-center" style="width: 20%;">
-                                    <a href="#" class="table-link">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="table-link danger">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="#" class="user-link">Ryan Gossling</a>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-danger">Comentarista</span>
-                                </td>
-                                <td>
-                                    <a href="#">jack@nicholson</a>
-                                </td>
-                                <td class="text-center" style="width: 20%;">
-                                    <a href="#" class="table-link">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="table-link danger">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="#" class="user-link">Emma Watson</a>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-warning">Excluído</span>
-                                </td>
-                                <td>
-                                    <a href="#">humphrey@bogart.com</a>
-                                </td>
-                                <td class="text-center" style="width: 20%;">
-                                    <a href="#" class="table-link">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="table-link danger">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="#" class="user-link">Robert Downey Jr.</a>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-success">Autor</span>
-                                </td>
-                                <td>
-                                    <a href="#">spencer@tracy</a>
-                                </td>
-                                <td class="text-center" style="width: 20%;">
-                                    <a href="#" class="table-link">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="table-link danger">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="#" class="user-link">Mila Kunis</a>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-default">Admin</span>
-                                </td>
-                                <td>
-                                    <a href="#">mila@kunis.com</a>
-                                </td>
-                                <td class="text-center" style="width: 20%;">
-                                    <a href="#" class="table-link">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="table-link danger">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="#" class="user-link">George Clooney</a>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-success">Comentarista</span>
-                                </td>
-                                <td>
-                                    <a href="#">marlon@brando.com</a>
-                                </td>
-                                <td class="text-center" style="width: 20%;">
-                                    <a href="#" class="table-link">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="table-link danger">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="#" class="user-link">Ryan Gossling</a>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-danger">Excluído</span>
-                                </td>
-                                <td>
-                                    <a href="#">jack@nicholson</a>
-                                </td>
-                                <td  class="text-center" style="width: 20%;">
-                                    <a href="#" class="table-link">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="table-link danger">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="#" class="user-link">Emma Watson</a>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-warning">Admin</span>
-                                </td>
-                                <td>
-                                    <a href="#">humphrey@bogart.com</a>
-                                </td>
-                                <td  class="text-center" style="width: 20%;">
-                                    <a href="#" class="table-link">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="table-link danger">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="#" class="user-link">Robert Downey Jr.</a>
-                                </td>
-                                <td class="text-center">
-                                    <span class="label label-success">Autor</span>
-                                </td>
-                                <td>
-                                    <a href="#">spencer@tracy</a>
-                                </td>
-                                <td class="text-center" style="width: 20%;">
-                                    <a href="#" class="table-link">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="table-link danger">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                            </tr>
+                            </tr>  
+                            <%}%>
                         </tbody>
                     </table>
                 </div>
