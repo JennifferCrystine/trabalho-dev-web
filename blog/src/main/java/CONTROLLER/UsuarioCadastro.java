@@ -45,7 +45,7 @@ public class UsuarioCadastro extends HttpServlet {
             throws ServletException, IOException {
         Usuario usuario = (Usuario)request.getSession().getAttribute("usuario");
         request.getSession().setAttribute("usuario", usuario);//salva Usuário na seção
-        RequestDispatcher view= request.getRequestDispatcher("Login");//redireciona para home de usuario não logado
+        RequestDispatcher view= request.getRequestDispatcher("index.jsp");//redireciona para home de usuario não logado
         view.forward(request, response);
     }
 

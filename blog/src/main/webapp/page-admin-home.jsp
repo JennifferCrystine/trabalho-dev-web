@@ -90,7 +90,9 @@
                       </h2>
                   </div>
                   <div class="col-2">
-                      <button type="button" class="btn btn-danger">Desaprovar</button>
+                       <form action="ArtigoController" method="post"> 
+                            <a method="GET" class="btn btn-danger" href="DesaprovarArtigo?id=<%= artigo.getIdArtigo()%>">Desaprovar</a>
+                        </form>
                   </div>
               </div>
             </a>

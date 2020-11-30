@@ -97,12 +97,14 @@
                                             <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                         </span>
                                     </a>
-                                    <a href="UsuarioController?id=<%=usuario.getIdUsuario()%>" method="POST" class="table-link danger">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
+                                    <form action="UsuarioCadastro" method="post">
+                                        <a method="GET" href="UsuarioController?id=<%=usuario.getIdUsuario()%>"  class="table-link danger">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </a>
+                                    </form>
                                 </td>
                             </tr>  
                             <%}%>

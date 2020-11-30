@@ -94,7 +94,24 @@ public class ArtigoDAO {
         } 
     }
     
-     public Artigo buscaArtigo(int idArtigo) {
+    
+    public void reprovaArtigo(int id) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stm = null;
+        try {
+            stm=con.prepareStatement("update artigo set aprovado=? " +
+                                "where id = ?");
+            stm.setString(1, "N");
+            stm.setInt(2, id);
+            stm.executeUpdate();            
+        }catch (SQLException ex) {
+            System.out.println("Problemas ao conectar ao banco: "+ex);
+        } finally{
+            Conexao.closeConnection(con, stm);
+        } 
+    }
+    
+    public Artigo buscaArtigo(int idArtigo) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
         ResultSet resultado = null;

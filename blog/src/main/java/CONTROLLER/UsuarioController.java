@@ -53,14 +53,6 @@ public class UsuarioController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher view= request.getRequestDispatcher("page-admin-authorized-users.jsp");//redireciona para home de usuario não logado
-        view.forward(request, response);
-    }
-
-    
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         Usuario usuarioDeletar = usuarioDAO.buscaUsuario(id);
         Usuario usuarioAtual = (Usuario)request.getSession().getAttribute("usuario");
@@ -74,6 +66,13 @@ public class UsuarioController extends HttpServlet {
             RequestDispatcher view= request.getRequestDispatcher("page-admin-authorized-users.jsp");//redireciona para home de usuario não logado
             view.forward(request, response);
         }
+        
+    }
+
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         
         
     }
