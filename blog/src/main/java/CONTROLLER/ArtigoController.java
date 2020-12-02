@@ -36,6 +36,11 @@ public class ArtigoController extends HttpServlet {
         return artigos;        
     } 
     
+    public Artigo buscaArtigos(int id) {
+        Artigo artigo = artigoDAO.buscaArtigo(id);
+        return artigo;
+    } 
+    
     public List<Artigo> autorArtigos(int id, String aprovado) {
         List <Artigo> artigos;
         artigos = artigoDAO.getUsuarioArtigos(id, aprovado);

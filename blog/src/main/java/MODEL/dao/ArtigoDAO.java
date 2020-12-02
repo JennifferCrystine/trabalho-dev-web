@@ -43,19 +43,24 @@ public class ArtigoDAO {
         }
     }   
      
-    public void editar(Artigo artigo, int id) throws SQLException{
+    public void editar(int idArtigo, String titulo, String conteudo, int idCategoria) {
         Connection con = Conexao.getConnection();
-        PreparedStatement stm = null;
+        PreparedStatement stm = null;        
         try {
-            stm=con.prepareStatement("UPDATE categoria\n" +
-                                    "SET titulo = ?, conteudo = ?\n" +
+            if (idCategoria == 0) {
+                Artigo artigo = this.buscaArtigo(idArtigo);
+                idCategoria = artigo.getCategoria().getIdCategoria();
+            }
+            stm=con.prepareStatement("UPDATE artigo\n" +
+                                    "SET titulo = ?, conteudo = ?, id_categoria = ?\n" +
                                     "where id = ?;");
-            stm.setString(1, artigo.getTitulo());
-            stm.setString(2, artigo.getConteudo());
-            stm.setInt(3, artigo.getIdArtigo());
+            stm.setString(1, titulo);
+            stm.setString(2, conteudo);
+            stm.setInt(4, idArtigo);
+            stm.setInt(3, idCategoria);
             stm.executeUpdate();            
         }catch (SQLException ex) {
-            throw new SQLException("Problemas ao conectar ao banco.");
+            System.out.println("Problemas ao conectar ao banco: "+ex);
         } finally{
             Conexao.closeConnection(con, stm);
         }

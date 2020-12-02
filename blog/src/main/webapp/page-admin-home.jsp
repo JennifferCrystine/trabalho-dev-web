@@ -91,6 +91,7 @@
                   </div>
                   <div class="col-2">
                        <form action="ArtigoController" method="post"> 
+                           <a method="GET" href="page-author-edit-post.jsp?id=<%= artigo.getIdArtigo()%>" class="btn btn-info">Editar</a> 
                             <a method="GET" class="btn btn-danger" href="DesaprovarArtigo?id=<%= artigo.getIdArtigo()%>">Desaprovar</a>
                         </form>
                   </div>
@@ -102,9 +103,6 @@
           <hr>
          <% }%>
           <!-- Pager -->
-          <div class="clearfix">
-            <a class="btn btn-primary float-right" href="#">Posts antigos&rarr;</a>
-          </div>
         </div>
       </div>
     </div>
