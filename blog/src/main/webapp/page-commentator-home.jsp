@@ -23,25 +23,7 @@
   <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-      <div class="container">
-        <a class="navbar-brand nav-home" href="page-commentator-home.jsp">Blog</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          Menu
-          <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav navbar-nav-home ml-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="page-commentator-home.jsp">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="Logout" method="GET">Sair</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <%@include  file="headers/commentator-home-header.jsp" %>
     
     <!-- JavaScript (Opcional) -->
     <!-- jQuery, Popper.js, Bootstrap JS --> 
@@ -50,19 +32,6 @@
     <script src="assets/js/bootstrap/bootstrap.min.js"></script>
 
     <!-- Header -->
-    <header class="masthead" style="background-image: url('assets/img/header-background.jpg')">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="site-heading">
-              <h1>Blog</h1>
-              <span class="subheading font-italic">Desenvolvido por Jenniffer Cystine e Luisa Dirce</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
    
     <!-- Main Content -->
     <% ArtigoController artigoCTRL = new ArtigoController();%>
