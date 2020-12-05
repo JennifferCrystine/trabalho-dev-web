@@ -38,14 +38,14 @@
           <div class="post-preview">              
                 <a href="page-post.jsp">                
                 <div class="row post-title-button justify-content-between">
-                    <div class="col-10">
+                    <div class="col-7">
                         <h2 class="post-title">
                             <% out.println(artigo.getTitulo()); %>
                         </h2>
                     </div>
                     <div class="col-2">
                         <form action="ArtigoController" method="post"> 
-                            <a method="GET" href="AprovarArtigoController?id=<%= artigo.getIdArtigo()%>">Aprovar</a>
+                            <a method="GET" href="AprovarArtigoController?id=<%= artigo.getIdArtigo()%>" class="btn btn-info">Aprovar</a>
                         </form> 
                     </div>
                 </div>

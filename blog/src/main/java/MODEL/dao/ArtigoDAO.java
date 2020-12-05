@@ -66,16 +66,16 @@ public class ArtigoDAO {
         }
     }
         
-    public void remover(Artigo artigo) throws SQLException {
+    public void remover(int id) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
         try {
-            stm = con.prepareStatement("DELETE from categoria where id=?");
-            stm.setInt(1, artigo.getIdArtigo());
+            stm = con.prepareStatement("DELETE from artigo where id=?");
+            stm.setInt(1, id);
             stm.executeUpdate();
         }
         catch(SQLException ex){
-            throw new SQLException("Problemas ao conectar ao banco.");
+            System.out.println("Problemas ao conectar ao banco: "+ex);
         }
         finally {
             Conexao.closeConnection(con, stm);

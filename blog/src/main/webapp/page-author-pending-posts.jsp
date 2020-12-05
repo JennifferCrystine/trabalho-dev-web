@@ -49,20 +49,19 @@
                  %>
                 <% for(Artigo artigo : artigoCTRL.autorArtigos(id, "N")) { %>
                     <div class="post-preview">
-                        <%request.getSession().setAttribute("artigo", artigo); %>
-                      <a href="page-post.jsp" <h2 class="post-title">
-                          <% out.println(artigo.getTitulo());%>
-                        </h2>
+                        <a href="ArtigoController?id=<%=artigo.getIdArtigo()%>">
+                          <h3><% out.println(artigo.getTitulo());%></h3>
                       </a>
                       <p class="post-category"><% out.println(artigo.getCategoria().getDescricao());%></p>
                       <p class="post-meta">Postado por <% out.println(artigo.getUsuario().getNome());%></p>
                     </div>
+                    <form action="ArtigoController" method="post"> 
+                        <a method="GET" href="page-author-edit-post.jsp?id=<%= artigo.getIdArtigo()%>" class="btn btn-info">Editar</a> 
+                        <a method="GET"  href="ApagarArtigoController?id=<%= artigo.getIdArtigo()%>" class="btn btn-danger">Excluir</a>
+                    </form>
                     <hr>
                 <%}%>            
             <!-- Pager -->
-            <div class="clearfix">
-              <a class="btn btn-primary float-right" href="#">Posts antigos&rarr;</a>
-            </div>
           </div>
         </div>
       </div>
