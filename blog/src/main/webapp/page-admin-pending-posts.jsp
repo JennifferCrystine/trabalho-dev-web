@@ -46,6 +46,7 @@
                     <div class="col-2">
                         <form action="ArtigoController" method="post"> 
                             <a method="GET" href="AprovarArtigoController?id=<%= artigo.getIdArtigo()%>" class="btn btn-info">Aprovar</a>
+                            <a method="GET"  href="ApagarArtigoController?id=<%= artigo.getIdArtigo()%>" class="btn btn-danger">Excluir</a>
                         </form> 
                     </div>
                 </div>

@@ -76,7 +76,7 @@ public class UsuarioCadastro extends HttpServlet {
         int id;        
         id = usuarioDAO.criar(usuario);
         usuario.setIdUsuario(id);
-        RequestDispatcher view= request.getRequestDispatcher("Login");
+        RequestDispatcher view= request.getRequestDispatcher("index.jsp");
         view.forward(request, response);
         
         //redireciona para o index de usuario não logado porque cadastro ainda não aprovado

@@ -82,8 +82,8 @@
                       <textarea class="form-control" id="creating-post-content" name="commentary-content" rows="5" placeholder="Comente aqui"></textarea>
                     </div>
                     <div >
-                        <button type="submit" class="btn btn-primary">Pedir autorização para comentar</button>
-                      </div>
+                        <button type="submit" class="btn btn-primary">Comentar</button>
+                    </div>
                 </form>
             </div>
         </div>
