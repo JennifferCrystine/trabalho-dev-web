@@ -25,7 +25,6 @@ public class UsuarioDAO {
         PreparedStatement stm= null;
         ResultSet resultado = null;
         int response = INF;
-        byte cad = 0;
         try {
             stm=con.prepareStatement("INSERT into usuario(nome,email,"
                     + "senha,cpf,papel,cadastro_aprovado) VALUES (?,?,?,?,?,?)");
@@ -34,7 +33,7 @@ public class UsuarioDAO {
             stm.setString(3, usuario.getSenha());
             stm.setString(4, usuario.getCpf());
             stm.setInt(5, usuario.getPapel());            
-            stm.setByte(6, cad);
+            stm.setString(6, "N");
             response = stm.executeUpdate();
             if (response == 1) {
                 stm=con.prepareStatement("select LAST_INSERT_ID() as idUsuario");
@@ -66,7 +65,8 @@ public class UsuarioDAO {
                 usuario.setEmail(resultado.getString("email"));   
                 usuario.setCpf(resultado.getString("cpf"));
                 usuario.setPapel(resultado.getInt("papel"));
-                usuario.setAprovado(resultado.getByte("cadastro_aprovado"));
+                char cad = resultado.getString("cadastro_aprovado").charAt(0);
+                usuario.setAprovado(cad);
             }            
         } catch (SQLException ex) {
             System.out.println("Problemas ao conectar com o banco: "+ex);
@@ -119,7 +119,7 @@ public class UsuarioDAO {
                 usuario.setEmail(resultado.getString("email"));   
                 usuario.setCpf(resultado.getString("cpf"));
                 usuario.setPapel(resultado.getInt("papel"));
-                usuario.setAprovado(resultado.getByte("cadastro_aprovado"));
+                usuario.setAprovado(resultado.getString("cadastro_aprovado").charAt(0));
             }            
         } catch (SQLException ex) {
             System.out.println("Problemas ao conectar com o banco: "+ex);
@@ -133,21 +133,21 @@ public class UsuarioDAO {
     public void editar(Usuario usuario, int id, String acao) {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
-        byte cadAprov = 0;
+        String cadAprov = "N";
         try {
             stm=con.prepareStatement("UPDATE usuario\n" +
                                 "SET nome = ?, email = ?, senha = ?, "
                     + "cpf = ?, cadastro_aprovado=?\n" +
                                 "where id = ?;");
 
-            if (usuario.getAprovado() == 1) {
-                cadAprov = 1;
+            if (usuario.getAprovado() == 'S') {
+                cadAprov = "S";
             }
             stm.setString(1, usuario.getNome());
             stm.setString(2, usuario.getEmail());
             stm.setString(3, usuario.getSenha());
             stm.setString(4, usuario.getCpf());
-            stm.setByte(5, cadAprov);
+            stm.setString(5, cadAprov);
             stm.setInt(6, usuario.getIdUsuario());
             stm.executeUpdate();            
         }catch (SQLException ex) {
@@ -163,7 +163,7 @@ public class UsuarioDAO {
         try {
             stm=con.prepareStatement("UPDATE usuario set cadastro_aprovado=?\n" +
                                 "where id = ?");
-            stm.setInt(1, 1);
+            stm.setString(1, "S");
             stm.setInt(2, id);
             stm.executeUpdate();            
         }catch (SQLException ex) {
@@ -193,16 +193,16 @@ public class UsuarioDAO {
         Connection con = Conexao.getConnection();
         PreparedStatement stm = null;
         ResultSet resultado = null;
-        byte status = 0; //empty ou vazio
+        char status = 'N'; //empty ou vazio
         boolean aprovado = false;
         try {
             stm = con.prepareStatement("SELECT cadastro_aprovado from usuario where id =?");
             stm.setInt(1, id);
             resultado = stm.executeQuery();            
             if(resultado.next()){
-                status = resultado.getByte("cadastro_aprovado");    
+                status = resultado.getString("cadastro_aprovado").charAt(0);    
             }
-            if (status == 1){
+            if (status == 'S'){
                 aprovado = true;
             }            
         }
@@ -222,7 +222,7 @@ public class UsuarioDAO {
         List <Usuario> usuarios = new ArrayList();
         try {
             stm = con.prepareStatement("SELECT * from usuario where cadastro_aprovado=?");
-            stm.setInt(1, 1);
+            stm.setString(1, "S");
             resultado = stm.executeQuery();            
             while(resultado.next()){
                Usuario usuario = new Usuario();
@@ -251,7 +251,7 @@ public class UsuarioDAO {
        try {
            stm = con.prepareStatement("SELECT * from usuario where cadastro_aprovado=? "
                    + "or cadastro_aprovado is null");
-           stm.setInt(1, 0);
+           stm.setString(1, "N");
            resultado = stm.executeQuery();
            while(resultado.next()){
                Usuario usuario = new Usuario();

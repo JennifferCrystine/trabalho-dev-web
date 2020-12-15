@@ -58,7 +58,7 @@ public class UsuarioCadastro extends HttpServlet {
         usuario.setNome(request.getParameter("name"));
         usuario.setEmail(request.getParameter("email"));
         usuario.setSenha(request.getParameter("password"));
-        usuario.setAprovado((byte)0);
+        usuario.setAprovado('N');
         String papel = request.getParameter("roles");
         switch (papel) {
             case "option1":

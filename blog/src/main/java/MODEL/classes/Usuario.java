@@ -15,7 +15,7 @@ public class Usuario {
     private String email;
     private String senha;
     private String cpf;
-    private byte aprovado;
+    private char aprovado;
     private int papel;
 
     public void setIdUsuario(int idUsuario) {
@@ -39,7 +39,7 @@ public class Usuario {
         this.cpf = cpf;
     }
 
-    public void setAprovado(byte aprovado) {
+    public void setAprovado(char aprovado) {
         this.aprovado = aprovado;
     }
 
@@ -68,7 +68,7 @@ public class Usuario {
         return cpf;
     }
 
-    public byte getAprovado() {
+    public char getAprovado() {
         return aprovado;
     }
 

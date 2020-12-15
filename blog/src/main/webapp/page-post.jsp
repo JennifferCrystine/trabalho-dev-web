@@ -52,6 +52,37 @@
         <%} else if(usuario.getPapel() == 2) {%>
             <%@include file="headers/commentator-other-header.jsp" %>
         <%}%>
+     <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">Login</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="form-login" action="Login" method="GET">
+              <div class="form-group">
+                <label for="user-cpf" class="col-form-label">CPF:</label>
+                <input type="number" class="form-control" id="user-cpf" name="login-cpf" placeholder="Informe seu CPF">
+                <span class='msg-erro msg-cpf-login' style="color: red; display: none;"></span>
+              </div>
+              <div class="form-group">
+                <label for="user-password" class="col-form-label">Senha:</label>
+                <input type="password" class="form-control" id="user-password" name="login-password" placeholder="Informe sua senha"></input>
+                <span class='msg-erro msg-password-login' style="color: red; display: none;"></span>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Entrar</button>
+              </div>
+            </form>
+          </div>          
+        </div>
+      </div>
+    </div>
     <!-- JavaScript (Opcional) -->
     <!-- jQuery, Popper.js, Bootstrap JS --> 
     <script src="assets/js/jquery-3.5.1.min.js"></script>
